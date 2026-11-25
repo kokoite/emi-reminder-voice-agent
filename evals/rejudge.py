@@ -12,7 +12,7 @@ from datetime import date
 from loguru import logger
 
 import config
-from borrowers import load_borrowers
+from agent.borrowers import load_borrowers
 from evals.run_evals import gemini_client, judge_run, print_summary, summarise
 
 

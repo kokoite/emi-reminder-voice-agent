@@ -13,8 +13,8 @@ from datetime import date
 from loguru import logger
 
 import config
-from agent import run_text_call
-from borrowers import load_borrowers
+from agent.borrowers import load_borrowers
+from agent.conversation import run_text_call
 
 
 async def main(borrower_id: str) -> None:

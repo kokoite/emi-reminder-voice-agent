@@ -140,7 +140,7 @@ a leak ("we'll call you on November 25th"); parallel calls collided writing the 
 
 1. **Hindi amounts and dates from code.** Told to translate them, the agent said a wrong due
    date ("unnis November" for the 28th). Keeping them in English words fixed it in text
-   (6 of 6 since), but only as an instruction; `spoken.py` should produce the Hindi forms.
+   (6 of 6 since), but only as an instruction; `agent/spoken.py` should produce the Hindi forms.
 2. **Ending reliability in code.** About 1 call in 20 still says goodbye after the link
    without `end_call`. Detecting "the call is over" outside the LLM, or extracting the outcome
    after the call from the transcript (both in `IMPROVEMENTS.md`), would make it certain.

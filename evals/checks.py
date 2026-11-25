@@ -7,8 +7,8 @@ disclosure, promise-to-pay capture and call efficiency.
 
 import re
 
-from borrowers import Borrower
-from spoken import ordinal
+from agent.borrowers import Borrower
+from agent.spoken import ordinal
 
 # Words a bot line can't contain before the caller is verified: any money amount or
 # EMI status. The loan type and the due day are added per borrower.

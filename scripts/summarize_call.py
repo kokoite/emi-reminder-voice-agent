@@ -1,6 +1,6 @@
 """Summarise one call's turn-taking: latency, barge-ins, Jev decisions and silences.
 
-Run: .venv/bin/python summarize_call.py [call_id]   (default: the latest call)
+Run: .venv/bin/python -m scripts.summarize_call [call_id]   (default: the latest call)
 """
 
 import json

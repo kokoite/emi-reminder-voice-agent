@@ -22,8 +22,8 @@ from typing import Any
 from loguru import logger
 
 import config
-from borrowers import Borrower
-from spoken import date_in_words, digits, due_status, rupees
+from agent.borrowers import Borrower
+from agent.spoken import date_in_words, digits, due_status, rupees
 
 # The borrower responses the assignment lists, as outcomes.
 OUTCOMES = (

@@ -4,8 +4,8 @@ from datetime import date
 import pytest
 
 import config
-from borrowers import load_borrowers
-from tools import (
+from agent.borrowers import load_borrowers
+from agent.tools import (
     TOOL_SCHEMAS,
     TOOLS,
     CallState,

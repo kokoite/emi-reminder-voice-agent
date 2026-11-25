@@ -11,7 +11,7 @@ from pipecat.frames.frames import (
     VADUserStoppedSpeakingFrame,
 )
 
-from barge_in import BotLineObserver, JevBargeInStrategy, OutputGate, interrupt_question
+from voice.barge_in import BotLineObserver, JevBargeInStrategy, OutputGate, interrupt_question
 
 
 class FakeJev:
@@ -273,7 +273,7 @@ def test_backchannel_turn_ends_even_if_its_transcript_never_arrives():
 
 
 def test_guard_agrees_at_once_for_normal_turns_and_after_the_decision_for_barge_ins():
-    from barge_in import BargeInTurnGuard
+    from voice.barge_in import BargeInTurnGuard
 
     strategy = Strategy(FakeJev("interruption", delay=0.05))
     guard = BargeInTurnGuard(strategy)

@@ -32,7 +32,7 @@ cp .env.example .env         # then fill in the four keys
 python3 -m http.server 8000                  # serves the call page, from lumen/
 ```
 
-Open http://localhost:8000/call.html and press **Call**. The bot calls the borrower set in
+Open http://localhost:8000/web/call.html and press **Call**. The bot calls the borrower set in
 `config.VOICE_BORROWER_ID` (default `b_01`). Mock borrowers, with what to say to verify:
 
 | id | Name | Date of birth | Last 4 digits | Loan | EMI (₹) | Due |
@@ -48,8 +48,9 @@ Open http://localhost:8000/call.html and press **Call**. The bot calls the borro
 
 Due dates are stored relative to today (`data/borrowers.json`), so the data never goes stale.
 Each call writes its events to `events/<call_id>.jsonl` and its outcome record to
-`outcomes.jsonl`. `dashboard.html` (same page server) shows per-turn latency;
-`summarize_call.py [call_id]` prints one call's latency, barge-ins and silences.
+`outcomes.jsonl`. http://localhost:8000/web/dashboard.html shows per-turn latency;
+`.venv/bin/python -m scripts.summarize_call [call_id]` prints one call's latency, barge-ins
+and silences, and `.venv/bin/python -m scripts.check_services` checks every API key.
 
 **Text chat with the same agent** (for testing; type as the borrower, an empty line hangs up)
 
@@ -109,23 +110,32 @@ browser mic ─► SmallWebRTC ─► Silero VAD ─► Sarvam realtime STT ─�
    ▲                                                                barge-in decided by Jev)
    │                                                                        │
    └── output gate ◄── ElevenLabs Flash v2.5 ◄── Gemini 3.5 Flash-Lite ◄────┘
-       (pause/resume                              + 3 tools (agent.py, tools.py)
+       (pause/resume                              + 3 tools (agent/)
         on barge-in)
-event recorder (every stage) ─► events/<call_id>.jsonl ─► dashboard.html
+event recorder (every stage) ─► events/<call_id>.jsonl ─► web/dashboard.html
 ```
 
-| File | Job |
-|---|---|
-| `bot.py` | The voice pipeline (Pipecat 1.17) and call lifecycle |
-| `agent.py` | The agent: system prompt, opening, tools on Pipecat's Gemini service; `run_text_call` for text calls |
-| `tools.py` | `verify_identity`, `send_payment_link`, `end_call`, and the per-call state |
-| `config.py` | Every setting: models, prompts, thresholds, timeouts. A model change is a config change |
-| `spoken.py` | Numbers and dates in words (Indian system: lakh, crore) |
-| `barge_in.py` | Interruptions: pause the bot's audio, ask Jev, then resume, stop, or ask "did you say something?" |
-| `stt_preroll.py` | Holds audio while nobody speaks and replays 0.5 s before speech starts |
-| `recorder.py` | The event log, written off the audio path |
-| `evals/` | Scenarios, simulated borrower, rule checks, judge, runner ([report](evals/REPORT.md)) |
-| `IMPROVEMENTS.md` | Logic we chose not to build, as next steps |
+```
+lumen/
+├── bot.py                 run the voice call (Pipecat 1.17 pipeline and call lifecycle)
+├── chat.py                run a text chat with the same agent
+├── config.py              every setting: models, prompts, thresholds, timeouts
+├── recorder.py            the event log, written off the audio path
+├── agent/                 the conversation
+│   ├── conversation.py    prompt, opening, tools on Pipecat's Gemini service, text calls
+│   ├── tools.py           verify_identity, send_payment_link, end_call, per-call state
+│   ├── borrowers.py       mock borrowers, due dates relative to today
+│   └── spoken.py          numbers and dates in words (Indian system: lakh, crore)
+├── voice/                 pieces of the voice pipeline
+│   ├── barge_in.py        interruptions: pause, ask Jev, then resume, stop or ask
+│   └── stt_preroll.py     hold audio while nobody speaks, replay 0.5 s before speech
+├── evals/                 scenarios, simulated borrower, checks, judge, runner, REPORT.md
+├── web/                   call.html (call page), dashboard.html (latency)
+├── scripts/               check_services.py, summarize_call.py
+├── data/borrowers.json    the mock borrowers
+├── tests/                 pytest for the pure logic
+└── IMPROVEMENTS.md        logic we chose not to build, as next steps
+```
 
 ## Key decisions and trade-offs
 
@@ -186,7 +196,7 @@ answers.
   ("six thousand two hundred rupees ka EMI twenty ninth of November ko due hai"). Before that
   instruction it translated them itself and said a wrong date; since, 6 of 6 Hindi eval
   calls were right. It is an instruction, not a guarantee: Hindi forms produced by code
-  (`spoken.py`) would be. Hindi has not been tried in a voice call yet.
+  (`agent/spoken.py`) would be. Hindi has not been tried in a voice call yet.
 - **Verification can't tell who is speaking:** a family member who knows the date of birth
   passes. The prompt says not to verify someone who said they aren't the borrower.
 - **Run-to-run variation:** see the report; the agent passes 38 to 42 of 42 eval calls.

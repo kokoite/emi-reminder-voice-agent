@@ -40,7 +40,7 @@ SARVAM_MODE = "codemix"
 SARVAM_STREAM_TYPE = "fast"  # partial words while the caller speaks, so barge-in decides sooner
 SARVAM_LANGUAGE = None  # None = Sarvam detects the language of each utterance.
 # Send speech-to-text only speech plus this much audio from just before it (see
-# stt_preroll.py). Keeps whole words and avoids paying for silence. 0 = stream
+# voice/stt_preroll.py). Keeps whole words and avoids paying for silence. 0 = stream
 # every second of audio continuously.
 STT_PRE_ROLL_SECS = 0.5
 # While holding audio, send this much silence every STT_KEEPALIVE_SECS so the
@@ -69,7 +69,7 @@ ELEVENLABS_VOICE_ID = "ohvvU75FpBEB8fdaLOMh"  # Monika Sogam – Lively E-Com Su
 # /v1/models call Pipecat's client uses to warm up, so warm-up asks a real question instead.
 JEV_BASE_URL = os.getenv("TYPESAFE_BASE_URL", "").strip() or "https://api.typesafe.ai"
 
-# Barge-in (see barge_in.py). When the caller speaks over the bot, the bot pauses
+# Barge-in (see voice/barge_in.py). When the caller speaks over the bot, the bot pauses
 # and Jev decides: backchannel -> resume, interruption -> stop.
 JEV_TIMEOUT_SECS = 0.8  # Jev answered in ~0.3 s warm; past this we stop, never talk over.
 BARGE_MAX_DECISION_SECS = 1.5  # Longest the bot stays paused before giving the caller the turn.

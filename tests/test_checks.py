@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 
 import config
-from borrowers import load_borrowers
+from agent.borrowers import load_borrowers
 from evals.checks import date_capture, disclosed_before_verification, outcome_accuracy
 
 TODAY = date(2026, 11, 24)

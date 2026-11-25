@@ -3,7 +3,7 @@ import asyncio
 from pipecat.frames.frames import VADUserStartedSpeakingFrame, VADUserStoppedSpeakingFrame
 from pipecat.processors.frame_processor import FrameDirection
 
-from stt_preroll import with_pre_roll
+from voice.stt_preroll import with_pre_roll
 
 RATE = 16000
 
@@ -67,7 +67,7 @@ def test_nothing_is_sent_while_nobody_speaks():
 
 
 def test_keepalive_sends_a_little_silence_while_holding(monkeypatch):
-    import stt_preroll
+    from voice import stt_preroll
 
     clock = [1000.0]
     monkeypatch.setattr(stt_preroll.time, "monotonic", lambda: clock[0])

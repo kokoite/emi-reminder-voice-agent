@@ -23,9 +23,9 @@ from pipecat.services.llm_service import FunctionCallParams
 from pipecat.workers.runner import WorkerRunner
 
 import config
-from borrowers import Borrower
+from agent.borrowers import Borrower
+from agent.tools import TOOL_SCHEMAS, CallState, run_tool, save_record_without_end_call
 from recorder import EventRecorder
-from tools import TOOL_SCHEMAS, CallState, run_tool, save_record_without_end_call
 
 # Gets the bot's last line, returns the caller's reply, or None when the caller hangs up.
 Caller = Callable[[str], Awaitable[str | None]]

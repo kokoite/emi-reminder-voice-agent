@@ -1,6 +1,6 @@
 """Step 0 check: one small real call to each service, to confirm the keys work.
 
-Run: .venv/bin/python check_services.py
+Run: .venv/bin/python -m scripts.check_services
 """
 
 import asyncio

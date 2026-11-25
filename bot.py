@@ -5,7 +5,7 @@ ElevenLabs (text-to-speech) → browser speaker. The bot speaks first, as on an
 outbound call. Every turn's latency is recorded for the dashboard.
 
 Run:  .venv/bin/python bot.py -t webrtc
-      python3 -m http.server 8000   then open http://localhost:8000/call.html
+      python3 -m http.server 8000   then open http://localhost:8000/web/call.html
 """
 
 import asyncio
@@ -37,18 +37,18 @@ from pipecat.turns.user_turn_strategies import UserTurnStrategies
 from pipecat.workers.runner import WorkerRunner
 
 import config
-from agent import build_llm, build_tools, opening_line, system_prompt
-from barge_in import (
+from agent.borrowers import load_borrowers
+from agent.conversation import build_llm, build_tools, opening_line, system_prompt
+from agent.tools import CallState, save_record_without_end_call
+from recorder import EventRecorder
+from voice.barge_in import (
     BargeInTurnGuard,
     BotLineObserver,
     JevBargeInStrategy,
     OutputGate,
     interrupt_question,
 )
-from borrowers import load_borrowers
-from recorder import EventRecorder
-from stt_preroll import with_pre_roll
-from tools import CallState, save_record_without_end_call
+from voice.stt_preroll import with_pre_roll
 
 transport_params = {
     "webrtc": lambda: TransportParams(audio_in_enabled=True, audio_out_enabled=True),

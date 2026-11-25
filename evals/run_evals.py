@@ -17,12 +17,12 @@ from google.genai.types import HttpOptions
 from loguru import logger
 
 import config
-from agent import run_text_call, system_prompt
-from borrowers import Borrower, load_borrowers
+from agent.borrowers import Borrower, load_borrowers
+from agent.conversation import run_text_call, system_prompt
+from agent.spoken import date_in_words
 from evals.checks import date_capture, run_checks
 from evals.judge import judge
 from evals.simulator import SimulatedBorrower
-from spoken import date_in_words
 
 METRICS = (
     "outcome_accuracy",

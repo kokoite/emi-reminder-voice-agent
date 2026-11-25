@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from agent import with_filler
+from agent.conversation import with_filler
 
 # Async tests run through anyio's pytest plugin (anyio comes with pipecat).
 pytestmark = pytest.mark.anyio

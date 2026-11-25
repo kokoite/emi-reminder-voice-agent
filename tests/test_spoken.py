@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from spoken import date_in_words, digits, due_status, number_in_words, rupees
+from agent.spoken import date_in_words, digits, due_status, number_in_words, rupees
 
 
 @pytest.mark.parametrize(

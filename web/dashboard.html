@@ -51,7 +51,7 @@
 <body>
 <main>
   <h1>Lumen dashboard</h1>
-  <p class="sub">Reads <code>events/</code>. Serve with <code>python -m http.server 8000</code> from <code>lumen/</code>, then reload to refresh.</p>
+  <p class="sub">Reads <code>events/</code>. Serve with <code>python -m http.server 8000</code> from <code>lumen/</code>, open <code>/web/dashboard.html</code>, reload to refresh.</p>
 
   <div class="bar">
     <label>Calls <select id="callFilter"><option value="">All calls</option></select></label>
@@ -80,10 +80,10 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
   async function loadCalls() {
-    const index = await fetch("events/index.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : []));
+    const index = await fetch("../events/index.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : []));
     const calls = [];
     for (const meta of index) {
-      const text = await fetch(`events/${meta.call_id}.jsonl`, { cache: "no-store" }).then((r) => (r.ok ? r.text() : ""));
+      const text = await fetch(`../events/${meta.call_id}.jsonl`, { cache: "no-store" }).then((r) => (r.ok ? r.text() : ""));
       const events = text.split("\n").filter(Boolean).map((line) => JSON.parse(line));
       calls.push({ ...meta, events });
     }
