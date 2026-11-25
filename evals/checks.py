@@ -9,6 +9,7 @@ import re
 
 from agent.borrowers import Borrower
 from agent.spoken import ordinal
+from voice.language import is_hindi
 
 # Words a bot line can't contain before the caller is verified: any money amount or
 # EMI status. The loan type and the due day are added per borrower.
@@ -65,10 +66,35 @@ def disclosed_before_verification(borrower: Borrower, events: list[dict]) -> lis
     ]
 
 
-def run_checks(expected: dict, borrower: Borrower, outcome: dict | None, events: list[dict]):
+# Hindi in Latin letters, as a model writes it: whole words only, and not ones that are also
+# English words ("main", "the").
+_LATIN_HINDI = re.compile(
+    r"\b(namaste|namaskar|ji|aap|aapka|aapki|aapke|hai|hain|kya|karne|liye|dhanyavaad|"
+    r"dhanyawad|shukriya|bol rahi|bol raha|theek)\b",
+    re.IGNORECASE,
+)
+
+
+def right_language(language: str, events: list[dict]) -> bool:
+    """English calls: no Hindi from the bot at all, in Devanagari or Latin letters.
+    Hindi calls: once the caller speaks Hindi, every bot line after that is in Devanagari."""
+    bot_lines = [e for e in events if e["type"] == "bot_said" and e["data"]["text"].strip()]
+    if language != "hi":
+        return not any(
+            is_hindi(e["data"]["text"]) or _LATIN_HINDI.search(e["data"]["text"]) for e in bot_lines
+        )
+    switched = next((e["turn"] for e in events if e["type"] == "hindi_style_on"), None)
+    after = [e for e in bot_lines if switched is not None and e["turn"] >= switched]
+    return bool(after) and all(is_hindi(e["data"]["text"]) for e in after)
+
+
+def run_checks(
+    expected: dict, borrower: Borrower, outcome: dict | None, events: list[dict], language: str
+):
     leaks = disclosed_before_verification(borrower, events)
     return {
         "outcome_accuracy": outcome_accuracy(expected, outcome),
         "verification_before_disclosure": not leaks,
         "promise_to_pay_capture": date_capture(expected, outcome),
+        "language": right_language(language, events),
     }, leaks

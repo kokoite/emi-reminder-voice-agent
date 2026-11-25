@@ -46,3 +46,15 @@ async def test_no_callback_means_no_filler():
         return 1
 
     assert await with_filler(work(), 0.0, None) == 1
+
+
+def test_end_call_can_be_required_and_released():
+    from types import SimpleNamespace
+
+    from agent.conversation import END_CALL_ONLY, require_end_call_next
+
+    llm = SimpleNamespace(_tool_config=None)
+    require_end_call_next(llm, True)
+    assert llm._tool_config == END_CALL_ONLY
+    require_end_call_next(llm, False)
+    assert llm._tool_config is None

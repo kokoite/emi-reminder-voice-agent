@@ -123,13 +123,22 @@ SMART_TURN_STOP_SECS = 1.2
 BORROWERS_FILE = ROOT / "data" / "borrowers.json"
 OUTCOMES_FILE = ROOT / "outcomes.jsonl"  # one outcome record per call
 # Added delay and failure rate per tool, to test filler lines and recovery (step 7).
-# The mock lookups take as long as a real one would ("a few seconds"), so the filler
-# below is exercised; end_call stays instant.
-TOOL_DELAY_SECS = {"verify_identity": 2.5, "send_payment_link": 2.5, "end_call": 0.0}
+# Mock latency like the real systems: the identity check is a fast lookup, sending the link
+# goes through an SMS gateway and can take a few seconds, so only that one gets the filler.
+TOOL_DELAY_SECS = {"verify_identity": 0.5, "send_payment_link": 2.5, "end_call": 0.0}
 TOOL_FAILURE_RATE = {"verify_identity": 0.0, "send_payment_link": 0.0, "end_call": 0.0}
 # No dead air during a slow tool: if a lookup hasn't answered after this long, the voice
 # bot says the filler line while it waits.
 FILLER_AFTER_SECS = 1.0
+# Added to the conversation by code (voice/language.py) the first time the caller's speech
+# is tagged Hindi, never to English calls. The voice reads Latin letters as English, so Hindi
+# must be written in Devanagari.
+HINDI_STYLE_NOTE = (
+    "(The caller is speaking Hindi. From now on reply in everyday spoken Hindi written in "
+    "Devanagari script, with English words, amounts, dates and names in English letters, and "
+    "feminine forms for yourself, like: «आपका EMI twelve thousand rupees है, जो the fifth of "
+    "December को due है। मैं payment link भेज सकती हूँ।»)"
+)
 # The voice reads Latin letters as English, so the Hindi line is in Devanagari.
 FILLER_LINES = {"en": "One moment, please.", "hi": "एक मिनट, please."}
 # Every tool returns {success, data, _instruction}. _instruction tells the LLM how to
@@ -162,16 +171,12 @@ TOOL_INSTRUCTIONS = {
 # only through verify_identity.
 AGENT_SYSTEM_PROMPT = """\
 # Role
-You are calling {name} on behalf of Lumen Finance about their EMI. You are a woman: in \
-Hindi, use feminine forms for yourself ("मैं बात कर रही हूँ", "भेज सकती हूँ").
+You are calling {name} on behalf of Lumen Finance about their EMI. You are a woman.
 
 # Style
 Speak like a polite person on the phone: short turns, plain spoken words, one question at \
-a time. Reply in the language the caller uses. When that is Hindi, speak everyday Hinglish \
-as people do on the phone, written in Devanagari, with English words (EMI, payment, link, \
-amounts, dates) in English letters, like: "आपका EMI six thousand rupees है, जो the fifth of \
-December को due है। आप payment कब तक कर पाएंगे?" Be firm about the reminder, warm and \
-respectful throughout.
+a time. Be firm about the reminder, warm and respectful throughout. Speak English unless \
+the caller wants another language.
 
 # Call steps
 1. Once they confirm they are {name} (if unclear, ask again), ask for their date of birth \

@@ -102,6 +102,8 @@ What code decides and what the LLM decides:
 | A record is still saved if the call ends any other way (hang-up, silence) | |
 | Silence: "are you still there?" after 6 s, then a goodbye | |
 | A lookup slower than 1 s: "One moment, please." while it runs | |
+| After the payment link is sent, the next reply must be `end_call` | |
+| Hindi style switched on when the caller speaks or asks for Hindi | |
 
 ## Architecture
 
@@ -166,10 +168,21 @@ lumen/
 - **The goodbye is an argument of `end_call`**, spoken by code, and described as what it is
   (a short goodbye, plus the callback time or the human follow-up when they apply) rather than
   a list of banned phrases; bans didn't hold.
-- **No dead air during lookups.** The mock tools take 2.5 s, like a real lookup
-  (`TOOL_DELAY_SECS`). If one hasn't answered after 1 s, code says "One moment, please."
+- **No dead air during lookups.** The mock tools take as long as real ones would
+  (`TOOL_DELAY_SECS`): the identity check 0.5 s, sending the payment link 2.5 s. If a tool
+  hasn't answered after 1 s, code says "One moment, please."
   (`FILLER_AFTER_SECS`, `FILLER_LINES`; in Hindi "एक मिनट, please." when the bot is
   speaking Hindi); a fast tool gets no filler.
+- **Hindi is switched on by code, not by the prompt.** The prompt is plain English ("Speak
+  English unless the caller wants another language"). A Hindi example in it pulled English
+  callers into Hindi; without one the agent wrote Hindi in Latin letters. So the first time
+  the caller speaks Hindi (Sarvam tags it `hi`, or the transcript is in Devanagari) or asks
+  for it, code adds a note with the Hindi style for the rest of the call
+  (`voice/language.py`, `HINDI_STYLE_NOTE`). The filler then switches to Hindi too.
+- **After the link, the call ends in code's terms.** Every flow ends right after the
+  payment link, but the model sometimes answered the link's result with a spoken goodbye and
+  no `end_call`, leaving the line open. Code now requires the next reply to be `end_call`
+  (Gemini's function calling mode, set by `require_end_call_next`).
 - **Recovery when a tool fails.** A failed tool returns a plain "temporary fault" result;
   the prompt says to tell the caller plainly and try again or move on. Failures can be
   injected per tool (`TOOL_FAILURE_RATE`, or per call in the evals).
@@ -181,7 +194,7 @@ lumen/
 | Measured | Median | Notes |
 |---|---|---|
 | Step 2 test calls, short test prompt, Gemini 2.5 Flash | ~1.4 s (best 1.23 s) | no tools |
-| Full agent call, Gemini 3.5 Flash-Lite (7 turns) | 2.1 s (p90 2.8 s) | turns with a tool call need two LLM requests back to back; measured before the 2.5 s mock lookup delay and the filler were added |
+| Full agent call, Gemini 3.5 Flash-Lite (7 turns) | 2.1 s (p90 2.8 s) | turns with a tool call need two LLM requests back to back; measured before the mock tool delays and the filler were added |
 
 Where the time goes on the full agent call: Gemini 0.6 to 1.2 s per request (two requests
 on a tool turn), up to 1.1 s waiting for the end of a one-word turn ("Yes."), about 0.1 s for
@@ -193,14 +206,11 @@ answers.
 
 ## Known limitations
 
-- **Hindi:** the agent switches to Hindi and speaks everyday Hinglish written in Devanagari,
-  with amounts, dates and English terms in English letters ("आपका EMI twelve thousand five
-  hundred rupees है, जो the twenty eighth of November को due है"), as a woman, matching the
-  voice. Written in Latin letters, the voice pronounced Hindi with an English accent;
-  Devanagari fixed that in live calls. Translating the figures itself, the agent once said a
-  wrong date, so they stay in English words. This is an instruction, not a guarantee: Hindi
-  forms produced by code (`agent/spoken.py`) would be. It can still slip, e.g. writing a name
-  wrongly in Devanagari or saying goodbye twice.
+- **Hindi:** the agent speaks everyday Hinglish written in Devanagari, with amounts, dates
+  and English terms in English letters, as a woman to match the voice. Written in Latin
+  letters, the voice gave Hindi an English accent. It can still slip, e.g. writing a name
+  wrongly in Devanagari; the figures stay in English words because translating them once
+  gave a wrong date (Hindi forms from code, `agent/spoken.py`, would be safer).
 - **Verification can't tell who is speaking:** a family member who knows the date of birth
   passes. The prompt says not to verify someone who said they aren't the borrower.
 - **Run-to-run variation:** see the report; the agent passes 38 to 42 of 42 eval calls.

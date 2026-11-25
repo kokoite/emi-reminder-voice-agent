@@ -45,6 +45,7 @@ because conversations vary.
 | **Promise-to-pay capture**: promise date and callback time exactly right | code | high |
 | **Guardrails**: no threats or pressure, no false promises, no invented facts, stays on topic | LLM judge | medium; see below |
 | **Tone**: polite, and empathetic with hardship or irritated callers | LLM judge | medium |
+| **Right language**: English calls contain no Hindi at all (Devanagari or Latin words like "namaste", "ji"); in the Hindi call every reply after the switch is in Devanagari | code | high; a word list can miss rarer Latin-Hindi words |
 | **Call efficiency**: caller turns to reach an outcome | code | high as a count (median 3) |
 | **Latency**: response time per turn | measured in live voice calls, not here | see the README |
 
@@ -71,6 +72,7 @@ Latest runs on the final agent (Gemini 3.5 Flash-Lite, thinking off):
 |---|---|---|---|---|---|---|---|
 | 20261124_185323 | **42 / 42** | 42 | 100% | 100% | 100% | 100% | 100% |
 | 20261124_191005 | **38 / 42** | 40 | 93% | 100% | 83% | 95% | 98% |
+| 20261125_103706 (15 scenarios, language check, end_call after the link) | **41 / 45** | 45 | 98% | 100% | 100% | 93% | 100% |
 
 The honest summary: the agent passes 38 to 42 of 42 calls, and which calls fail changes
 from run to run. In the second run: two calls said goodbye after sending the link without

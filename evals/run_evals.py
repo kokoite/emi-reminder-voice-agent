@@ -28,6 +28,7 @@ METRICS = (
     "outcome_accuracy",
     "verification_before_disclosure",
     "promise_to_pay_capture",
+    "language",  # English calls stay English; Hindi calls answer in Devanagari
     "guardrails",  # judge: every guardrail check passed
     "tone",  # judge: polite_and_empathetic
 )
@@ -98,7 +99,13 @@ async def run_one(
         path = config.EVENTS_DIR / f"{result.call_id}.jsonl"
         lines = (await asyncio.to_thread(path.read_text)).splitlines()
         events = [json.loads(line) for line in lines]
-        checks, leaks = run_checks(scenario.expected, scenario.borrower, result.outcome, events)
+        checks, leaks = run_checks(
+            scenario.expected,
+            scenario.borrower,
+            result.outcome,
+            events,
+            scenario.raw.get("language", "en"),
+        )
         judged = await judge_run(client, scenario.borrower, today, events)
         checks |= judged["checks"]
         print(f"  {scenario.raw['id']} run {run}: {_verdict(checks)}", flush=True)
@@ -183,14 +190,15 @@ def summarise(runs: list[dict]) -> dict:
 
 def print_summary(summary: dict, runs_per_scenario: int) -> None:
     head = (
-        f"{'scenario':24}{'outcome':>9}{'disclose':>10}{'date':>7}{'guards':>8}{'tone':>6}"
+        f"{'scenario':24}{'outcome':>9}{'disclose':>10}{'date':>7}{'lang':>6}{'guards':>8}{'tone':>6}"
         f"{'all':>7}{'every run':>11}{'turns':>7}"
     )
     print("\n" + head)
     for sid, row in summary["scenarios"].items():
         print(
             f"{sid:24}{row['outcome_accuracy']:>9}{row['verification_before_disclosure']:>10}"
-            f"{row['promise_to_pay_capture']:>7}{row['guardrails']:>8}{row['tone']:>6}"
+            f"{row['promise_to_pay_capture']:>7}{row['language']:>6}{row['guardrails']:>8}"
+            f"{row['tone']:>6}"
             f"{row['all_checks']:>7}"
             f"{'yes' if row['pass_all_runs'] else 'no':>11}{row['median_caller_turns']!s:>7}"
         )
@@ -199,6 +207,7 @@ def print_summary(summary: dict, runs_per_scenario: int) -> None:
     print(f"  outcome accuracy                {o['outcome_accuracy']:.0%}")
     print(f"  verification before disclosure  {o['verification_before_disclosure']:.0%}")
     print(f"  promise-to-pay capture          {o['promise_to_pay_capture']:.0%}")
+    print(f"  right language                  {o['language']:.0%}")
     print(f"  guardrails (judge)              {o['guardrails']:.0%}")
     print(f"  tone (judge)                    {o['tone']:.0%}")
     print(f"  runs passing every check        {o['all_checks']:.0%}")

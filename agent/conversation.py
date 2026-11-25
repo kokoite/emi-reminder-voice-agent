@@ -26,6 +26,7 @@ import config
 from agent.borrowers import Borrower
 from agent.tools import TOOL_SCHEMAS, CallState, run_tool, save_record_without_end_call
 from recorder import EventRecorder
+from voice.language import wants_hindi
 
 # Gets the bot's last line, returns the caller's reply, or None when the caller hangs up.
 Caller = Callable[[str], Awaitable[str | None]]
@@ -79,16 +80,33 @@ async def with_filler[T](
         filler.cancel()
 
 
+# Gemini's "function calling mode ANY", limited to end_call: the next reply must call it.
+END_CALL_ONLY = {"function_calling_config": {"mode": "ANY", "allowed_function_names": ["end_call"]}}
+
+
+def require_end_call_next(llm: GoogleLLMService, required: bool) -> None:
+    """Make Gemini's next reply be end_call (or lift that).
+
+    After the payment link is sent the call is over in every flow, but the model sometimes
+    answers the link's result with a spoken goodbye and no end_call, leaving the line open.
+    Pipecat 1.17 has no public option for Gemini's tool choice; the service reads this
+    field before every request.
+    """
+    llm._tool_config = END_CALL_ONLY if required else None
+
+
 def build_tools(
     state: CallState,
     emit: Callable[..., None],
     on_end_call: Callable[[bool], Awaitable[None]],
+    llm: GoogleLLMService,
     on_slow_tool: Callable[[], Awaitable[None]] | None = None,
 ) -> ToolsSchema:
     """The three tools as Pipecat schemas, each handler running the tool on this call's state.
 
     When end_call succeeds the LLM doesn't run again: the caller of build_tools speaks
     state.goodbye and ends the call. on_end_call(success) tells it end_call has finished.
+    Once the payment link is sent, the next reply must be end_call.
     on_slow_tool, if given, is called when verify_identity or send_payment_link is slow.
     """
 
@@ -99,9 +117,13 @@ def build_tools(
                 result = await work
             else:
                 result = await with_filler(work, config.FILLER_AFTER_SECS, on_slow_tool)
+            if name == "send_payment_link" and result["success"]:
+                require_end_call_next(llm, True)
             if name != "end_call":
                 await params.result_callback(result)
                 return
+            if result["success"]:
+                require_end_call_next(llm, False)
             run_llm = None if not result["success"] else False  # failed: let the LLM recover
             await params.result_callback(
                 result, properties=FunctionCallResultProperties(run_llm=run_llm)
@@ -164,7 +186,7 @@ async def run_text_call(
             {"role": "user", "content": config.CALL_CONNECTED_NOTE},
             {"role": "assistant", "content": opening},
         ],
-        tools=build_tools(state, recorder.emit, on_end_call),
+        tools=build_tools(state, recorder.emit, on_end_call, llm),
     )
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(context)
     worker = PipelineWorker(
@@ -203,6 +225,7 @@ async def run_text_call(
     running = asyncio.create_task(runner.run())
     try:
         bot_said(opening)
+        hindi_on = False
         for _ in range(config.TEXT_MAX_TURNS):
             line = await caller(result.transcript[-1]["text"])
             if line is None:
@@ -210,6 +233,12 @@ async def run_text_call(
                 break
             result.transcript.append({"role": "caller", "text": line})
             recorder.user_said(line)
+            # Same switch as the voice call: the caller speaks Hindi (in Devanagari, as
+            # Sarvam's codemix transcript writes it) or asks for it.
+            if not hindi_on and wants_hindi(line):
+                hindi_on = True
+                context.add_message({"role": "user", "content": config.HINDI_STYLE_NOTE})
+                recorder.emit("hindi_style_on", language="hi", text=line)
             await worker.queue_frame(
                 LLMMessagesAppendFrame([{"role": "user", "content": line}], run_llm=True)
             )

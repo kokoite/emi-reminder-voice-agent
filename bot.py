@@ -49,6 +49,7 @@ from voice.barge_in import (
     interrupt_question,
 )
 from voice.filler import filler_line
+from voice.language import HindiSwitch
 from voice.stt_preroll import with_pre_roll
 
 transport_params = {
@@ -175,7 +176,8 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments) -> Non
         recorder.emit("filler", text=line)
         await worker.queue_frames([TTSSpeakFrame(line, append_to_context=False)])
 
-    context = LLMContext(tools=build_tools(state, recorder.emit, on_end_call, on_slow_tool))
+    context = LLMContext(tools=build_tools(state, recorder.emit, on_end_call, llm, on_slow_tool))
+    hindi_switch = HindiSwitch(context, config.HINDI_STYLE_NOTE, recorder.emit)
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
         context,
         user_params=LLMUserAggregatorParams(
@@ -213,7 +215,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments) -> Non
         pipeline,
         params=PipelineParams(enable_metrics=True, enable_usage_metrics=True),
         idle_timeout_secs=runner_args.pipeline_idle_timeout_secs,
-        observers=[latency, recorder.observer, bot_line, gate],
+        observers=[latency, recorder.observer, bot_line, gate, hindi_switch],
         processor_unusable_policy=ProcessorUnusablePolicy.END,
     )
     runner = WorkerRunner(handle_sigint=runner_args.handle_sigint)

@@ -92,3 +92,28 @@ def test_never_verified_means_nothing_may_be_shared(ravi):
     assert disclosed_before_verification(ravi, events) == [
         "It's twelve thousand five hundred rupees."
     ]
+
+
+def said(turn, text):
+    return {"type": "bot_said", "turn": turn, "data": {"text": text}}
+
+
+def test_english_calls_must_have_no_hindi_at_all():
+    from evals.checks import right_language
+
+    assert right_language("en", [said(1, "Could you confirm your date of birth?")])
+    assert not right_language("en", [said(1, "Namaste Ravi ji, could you confirm your DOB?")])
+    assert not right_language("en", [said(1, "आपका EMI due है।")])
+    # English words that look like Hindi ones are fine
+    assert right_language("en", [said(1, "The main thing is the date.")])
+
+
+def test_hindi_calls_answer_in_devanagari_after_the_switch():
+    from evals.checks import right_language
+
+    switch = {"type": "hindi_style_on", "turn": 2, "data": {}}
+    good = [said(1, "Could you confirm your date of birth?"), switch, said(2, "आपका EMI due है।")]
+    assert right_language("hi", good)
+    latin = [switch, said(2, "Aapka EMI due hai.")]
+    assert not right_language("hi", latin)
+    assert not right_language("hi", [said(1, "Hello")])  # never switched
