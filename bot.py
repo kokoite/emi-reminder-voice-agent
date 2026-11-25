@@ -48,6 +48,7 @@ from voice.barge_in import (
     OutputGate,
     interrupt_question,
 )
+from voice.filler import filler_line
 from voice.stt_preroll import with_pre_roll
 
 transport_params = {
@@ -166,10 +167,13 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments) -> Non
             end_reason = "end_call"
             await worker.queue_frames([TTSSpeakFrame(state.goodbye or ""), EndFrame()])
 
+    last_bot_text = ""  # the filler follows the language of the bot's last line
+
     async def on_slow_tool() -> None:
         """A lookup is taking a while: say the filler line instead of leaving silence."""
-        recorder.emit("filler", text=config.FILLER_LINE)
-        await worker.queue_frames([TTSSpeakFrame(config.FILLER_LINE, append_to_context=False)])
+        line = filler_line(last_bot_text)
+        recorder.emit("filler", text=line)
+        await worker.queue_frames([TTSSpeakFrame(line, append_to_context=False)])
 
     context = LLMContext(tools=build_tools(state, recorder.emit, on_end_call, on_slow_tool))
     user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
@@ -232,7 +236,10 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments) -> Non
 
     @assistant_aggregator.event_handler("on_assistant_turn_stopped")
     async def on_assistant_turn_stopped(aggregator, message):
+        nonlocal last_bot_text
         recorder.bot_said(message.content, message.interrupted)
+        if message.content:
+            last_bot_text = message.content
 
     idle_count = 0
 

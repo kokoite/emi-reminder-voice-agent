@@ -130,14 +130,15 @@ TOOL_FAILURE_RATE = {"verify_identity": 0.0, "send_payment_link": 0.0, "end_call
 # No dead air during a slow tool: if a lookup hasn't answered after this long, the voice
 # bot says the filler line while it waits.
 FILLER_AFTER_SECS = 1.0
-FILLER_LINE = "One moment, please."
+# The voice reads Latin letters as English, so the Hindi line is in Devanagari.
+FILLER_LINES = {"en": "One moment, please.", "hi": "एक मिनट, please."}
 # Every tool returns {success, data, _instruction}. _instruction tells the LLM how to
 # read that result (what the fields mean, what may be shared), not what to say next.
 TOOL_INSTRUCTIONS = {
     "verify_identity": {
         "verified": "Identity is confirmed, so these loan details may now be shared with the "
-        "caller. Amounts and dates are already in spoken form; say them exactly as written, in "
-        "English words, whatever language you reply in. "
+        "caller. Amounts and dates are already in spoken form; say the values (not the field "
+        "names) exactly as written, in English words, whatever language you reply in. "
         "status says whether the EMI is upcoming or overdue, and by how many days.",
         "not_verified": "The answer did not match the borrower's records. The caller is "
         "unverified: no loan details may be shared.",
@@ -161,11 +162,15 @@ TOOL_INSTRUCTIONS = {
 # only through verify_identity.
 AGENT_SYSTEM_PROMPT = """\
 # Role
-You are calling {name} on behalf of Lumen Finance about their EMI.
+You are calling {name} on behalf of Lumen Finance about their EMI. You are a woman: in \
+Hindi, use feminine forms for yourself ("मैं बात कर रही हूँ", "भेज सकती हूँ").
 
 # Style
 Speak like a polite person on the phone: short turns, plain spoken words, one question at \
-a time. Reply in the language the caller uses. Be firm about the reminder, warm and \
+a time. Reply in the language the caller uses. When that is Hindi, speak everyday Hinglish \
+as people do on the phone, written in Devanagari, with English words (EMI, payment, link, \
+amounts, dates) in English letters, like: "आपका EMI six thousand rupees है, जो the fifth of \
+December को due है। आप payment कब तक कर पाएंगे?" Be firm about the reminder, warm and \
 respectful throughout.
 
 # Call steps

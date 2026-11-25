@@ -168,7 +168,8 @@ lumen/
   a list of banned phrases; bans didn't hold.
 - **No dead air during lookups.** The mock tools take 2.5 s, like a real lookup
   (`TOOL_DELAY_SECS`). If one hasn't answered after 1 s, code says "One moment, please."
-  (`FILLER_AFTER_SECS`, `FILLER_LINE`); a fast tool gets no filler.
+  (`FILLER_AFTER_SECS`, `FILLER_LINES`; in Hindi "एक मिनट, please." when the bot is
+  speaking Hindi); a fast tool gets no filler.
 - **Recovery when a tool fails.** A failed tool returns a plain "temporary fault" result;
   the prompt says to tell the caller plainly and try again or move on. Failures can be
   injected per tool (`TOOL_FAILURE_RATE`, or per call in the evals).
@@ -192,11 +193,14 @@ answers.
 
 ## Known limitations
 
-- **Hindi:** the agent switches to Hindi and keeps amounts and dates in English words
-  ("six thousand two hundred rupees ka EMI twenty ninth of November ko due hai"). Before that
-  instruction it translated them itself and said a wrong date; since, 6 of 6 Hindi eval
-  calls were right. It is an instruction, not a guarantee: Hindi forms produced by code
-  (`agent/spoken.py`) would be. Hindi has not been tried in a voice call yet.
+- **Hindi:** the agent switches to Hindi and speaks everyday Hinglish written in Devanagari,
+  with amounts, dates and English terms in English letters ("आपका EMI twelve thousand five
+  hundred rupees है, जो the twenty eighth of November को due है"), as a woman, matching the
+  voice. Written in Latin letters, the voice pronounced Hindi with an English accent;
+  Devanagari fixed that in live calls. Translating the figures itself, the agent once said a
+  wrong date, so they stay in English words. This is an instruction, not a guarantee: Hindi
+  forms produced by code (`agent/spoken.py`) would be. It can still slip, e.g. writing a name
+  wrongly in Devanagari or saying goodbye twice.
 - **Verification can't tell who is speaking:** a family member who knows the date of birth
   passes. The prompt says not to verify someone who said they aren't the borrower.
 - **Run-to-run variation:** see the report; the agent passes 38 to 42 of 42 eval calls.
