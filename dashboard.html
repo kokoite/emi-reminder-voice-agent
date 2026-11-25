@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumen Dashboard</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6a6963; --line: #dedbd2; --card: #ffffff;
+    --accent: #2f5d8a;
+    --p1: #2f5d8a; --p2: #c4733a; --p3: #4f8a5b; --p4: #8a4f7d; --p5: #b0a23a;
+    --p6: #4f7f8a; --p7: #8a5a4f; --p8: #6b6b6b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161615; --fg: #ecebe6; --muted: #a6a59e; --line: #34332f; --card: #1e1e1c;
+      --accent: #8ab4dd;
+      --p1: #6f9fcf; --p2: #e09a63; --p3: #7fbf8b; --p4: #c58ab8; --p5: #d8c96a;
+      --p6: #7fb3bf; --p7: #c99182; --p8: #9a9a9a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 24px; margin: 0; }
+  h2 { font-size: 18px; margin: 32px 0 8px; }
+  .sub { color: var(--muted); margin: 4px 0 16px; }
+  .bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+  select, button { font: inherit; padding: 4px 8px; background: var(--card); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 6px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+  .tile .label { color: var(--muted); font-size: 13px; }
+  .tile .value { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stack { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin: 8px 0;
+    border: 1px solid var(--line); }
+  .stack div { height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--card); margin-top: 8px; }
+  th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .empty { color: var(--muted); padding: 24px; text-align: center; background: var(--card);
+    border: 1px dashed var(--line); border-radius: 8px; }
+  code { font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lumen dashboard</h1>
+  <p class="sub">Reads <code>events/</code>. Serve with <code>python -m http.server 8000</code> from <code>lumen/</code>, then reload to refresh.</p>
+
+  <div class="bar">
+    <label>Calls <select id="callFilter"><option value="">All calls</option></select></label>
+    <button id="reload">Reload</button>
+    <span class="sub" id="status"></span>
+  </div>
+
+  <h2>Latency: caller stops → bot audio starts</h2>
+  <div id="latency"></div>
+
+  <h2>Per call</h2>
+  <div id="calls"></div>
+</main>
+
+<script>
+  const PART_COLORS = ["--p1", "--p2", "--p3", "--p4", "--p5", "--p6", "--p7", "--p8"];
+
+  const percentile = (values, p) => {
+    if (!values.length) return null;
+    const sorted = [...values].sort((a, b) => a - b);
+    const rank = Math.ceil((p / 100) * sorted.length) - 1;
+    return sorted[Math.max(0, Math.min(rank, sorted.length - 1))];
+  };
+  const fmt = (ms) => (ms == null ? "–" : `${Math.round(ms)} ms`);
+  const istTime = (iso) => new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  async function loadCalls() {
+    const index = await fetch("events/index.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : []));
+    const calls = [];
+    for (const meta of index) {
+      const text = await fetch(`events/${meta.call_id}.jsonl`, { cache: "no-store" }).then((r) => (r.ok ? r.text() : ""));
+      const events = text.split("\n").filter(Boolean).map((line) => JSON.parse(line));
+      calls.push({ ...meta, events });
+    }
+    return calls.sort((a, b) => b.started_at.localeCompare(a.started_at));
+  }
+
+  const turnLatencies = (call) =>
+    call.events.filter((e) => e.type === "turn_latency" && e.data.measured_from === "user_silence");
+  const greetingLatency = (call) =>
+    call.events.find((e) => e.type === "turn_latency" && e.data.measured_from === "client_connected");
+
+  function renderLatency(calls) {
+    const el = document.getElementById("latency");
+    const turns = calls.flatMap(turnLatencies);
+    if (!turns.length) {
+      el.innerHTML = `<div class="empty">No measured turns yet. Make a call and speak a few times.</div>`;
+      return;
+    }
+    const totals = turns.map((t) => t.data.total_ms);
+    const greetings = calls.map(greetingLatency).filter(Boolean).map((g) => g.data.total_ms);
+
+    // Group each turn's parts by key, keeping Pipecat's order of first appearance.
+    const parts = new Map();
+    for (const t of turns) {
+      for (const p of t.data.parts) {
+        if (!parts.has(p.key)) parts.set(p.key, { label: p.label, owner: p.owner, values: [] });
+        parts.get(p.key).values.push(p.ms);
+      }
+    }
+    const rows = [...parts.entries()].map(([key, p], i) => ({
+      key, ...p, color: `var(${PART_COLORS[i % PART_COLORS.length]})`,
+      median: percentile(p.values, 50), p90: percentile(p.values, 90),
+    }));
+    const stackTotal = rows.reduce((sum, r) => sum + r.median, 0) || 1;
+
+    el.innerHTML = `
+      <div class="tiles">
+        <div class="tile"><div class="label">Median</div><div class="value">${fmt(percentile(totals, 50))}</div></div>
+        <div class="tile"><div class="label">p90</div><div class="value">${fmt(percentile(totals, 90))}</div></div>
+        <div class="tile"><div class="label">Turns measured</div><div class="value">${turns.length}</div></div>
+        <div class="tile"><div class="label">Greeting (connect → first audio), median</div><div class="value">${fmt(percentile(greetings, 50))}</div></div>
+      </div>
+      <h2>Where the time goes (median of each part)</h2>
+      <div class="stack">${rows.map((r) => `<div title="${esc(r.label)}: ${fmt(r.median)}" style="width:${(100 * r.median) / stackTotal}%;background:${r.color}"></div>`).join("")}</div>
+      <div class="legend">${rows.map((r) => `<span><span class="swatch" style="background:${r.color}"></span>${esc(r.label)}</span>`).join("")}</div>
+      <div class="tablewrap"><table>
+        <tr><th>Part</th><th>Owner</th><th class="num">Median</th><th class="num">p90</th><th class="num">Turns with it</th></tr>
+        ${rows.map((r) => `<tr><td><span class="swatch" style="background:${r.color}"></span>${esc(r.label)}</td><td>${esc(r.owner)}</td><td class="num">${fmt(r.median)}</td><td class="num">${fmt(r.p90)}</td><td class="num">${r.values.length}</td></tr>`).join("")}
+      </table></div>`;
+  }
+
+  function renderCalls(calls) {
+    const el = document.getElementById("calls");
+    if (!calls.length) {
+      el.innerHTML = `<div class="empty">No calls recorded yet.</div>`;
+      return;
+    }
+    el.innerHTML = `<div class="tablewrap"><table>
+      <tr><th>Call</th><th>Started (IST)</th><th class="num">Turns</th><th class="num">Greeting</th><th class="num">Median</th><th class="num">p90</th><th>Ended</th></tr>
+      ${calls.map((c) => {
+        const totals = turnLatencies(c).map((t) => t.data.total_ms);
+        const greeting = greetingLatency(c);
+        return `<tr><td>${esc(c.call_id)}</td><td>${esc(istTime(c.started_at))}</td>
+          <td class="num">${c.turns}</td><td class="num">${fmt(greeting?.data.total_ms)}</td>
+          <td class="num">${fmt(percentile(totals, 50))}</td><td class="num">${fmt(percentile(totals, 90))}</td>
+          <td>${esc(c.end_reason ?? (c.ended_at ? "" : "in progress"))}</td></tr>`;
+      }).join("")}
+    </table></div>`;
+  }
+
+  let allCalls = [];
+  function render() {
+    const selected = document.getElementById("callFilter").value;
+    const shown = selected ? allCalls.filter((c) => c.call_id === selected) : allCalls;
+    renderLatency(shown);
+    renderCalls(shown);
+  }
+
+  async function refresh() {
+    const status = document.getElementById("status");
+    try {
+      allCalls = await loadCalls();
+      const filter = document.getElementById("callFilter");
+      const current = filter.value;
+      filter.innerHTML = `<option value="">All calls</option>` +
+        allCalls.map((c) => `<option value="${esc(c.call_id)}">${esc(istTime(c.started_at))} IST · ${esc(c.call_id)}</option>`).join("");
+      filter.value = allCalls.some((c) => c.call_id === current) ? current : "";
+      status.textContent = `${allCalls.length} call(s) loaded`;
+    } catch (e) {
+      status.textContent = `Could not read events/: ${e.message}`;
+      allCalls = [];
+    }
+    render();
+  }
+
+  document.getElementById("callFilter").addEventListener("change", render);
+  document.getElementById("reload").addEventListener("click", refresh);
+  refresh();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+[project]
+name = "lumen"
+version = "0.1.0"
+description = "Outbound EMI reminder voice agent for Lumen Finance (take-home)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pipecat-ai[webrtc,runner,silero,local-smart-turn,sarvam,google,elevenlabs,typesafe]==1.17.0",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8",
+    "pytest>=8",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.uv]
+package = false

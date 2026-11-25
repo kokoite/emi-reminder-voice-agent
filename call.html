@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumen Call</title>
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6a6963; --line: #dedbd2; --card: #ffffff;
+    --accent: #2f5d8a; --accent-fg: #ffffff; --danger: #b3412f; --user: #eef3f8; --bot: #f4f1ea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161615; --fg: #ecebe6; --muted: #a6a59e; --line: #34332f; --card: #1e1e1c;
+      --accent: #8ab4dd; --accent-fg: #10161c; --danger: #e07a68; --user: #1f2833; --bot: #26241f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .status { color: var(--muted); margin: 0 0 20px; min-height: 1.5em; }
+  .controls { display: flex; gap: 12px; margin-bottom: 20px; }
+  button { font: inherit; font-weight: 600; padding: 10px 22px; border-radius: 999px; border: 0; cursor: pointer; }
+  #call { background: var(--accent); color: var(--accent-fg); }
+  #hangup { background: var(--danger); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  #log { display: flex; flex-direction: column; gap: 8px; }
+  .msg { padding: 8px 12px; border-radius: 10px; max-width: 85%; border: 1px solid var(--line); }
+  .msg .who { font-size: 12px; color: var(--muted); display: block; }
+  .msg .time { font-variant-numeric: tabular-nums; margin-left: 6px; }
+  .user { align-self: flex-end; background: var(--user); }
+  .bot { align-self: flex-start; background: var(--bot); }
+  .interim { opacity: 0.6; font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lumen Finance: test call</h1>
+  <p class="status" id="status">Not connected.</p>
+  <div class="controls">
+    <button id="call">Call</button>
+    <button id="hangup" disabled>Hang up</button>
+  </div>
+  <div id="log"></div>
+  <audio id="botAudio" autoplay></audio>
+</main>
+
+<script type="module">
+  import { PipecatClient } from "https://cdn.jsdelivr.net/npm/@pipecat-ai/client-js@1.16.0/+esm";
+  import { SmallWebRTCTransport } from "https://cdn.jsdelivr.net/npm/@pipecat-ai/small-webrtc-transport@1.11.2/+esm";
+
+  // The bot runner (python bot.py -t webrtc). Override with ?bot=http://host:port
+  const BOT_URL = new URLSearchParams(location.search).get("bot") || "http://localhost:7860";
+
+  const $ = (id) => document.getElementById(id);
+  const log = $("log");
+  let client = null;
+  let userInterim = null;
+  let botLine = null;
+
+  function setStatus(text) { $("status").textContent = text; }
+
+  function playBotAudio(track) {
+    const audio = $("botAudio");
+    if (audio.srcObject?.getAudioTracks()[0]?.id === track.id) return;
+    audio.srcObject = new MediaStream([track]);
+    audio.play().catch((e) => setStatus(`Browser blocked audio playback: ${e.message}`));
+  }
+
+  // IST clock time with milliseconds, e.g. 15:32:10.412
+  function istClock(ms) {
+    const hms = new Date(ms).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
+    return `${hms}.${String(ms % 1000).padStart(3, "0")}`;
+  }
+
+  function addLine(who, text, cls = "") {
+    const el = document.createElement("div");
+    el.className = `msg ${who} ${cls}`;
+    el.innerHTML = `<span class="who">${who === "user" ? "You" : "Bot"}<span class="time"></span></span><span class="text"></span>`;
+    el.querySelector(".text").textContent = text;
+    log.appendChild(el);
+    el.scrollIntoView({ block: "end" });
+    return el;
+  }
+
+  // Each message shows when it started and ended: for the bot, when it started
+  // and stopped speaking; for the caller, when the first and the final transcript
+  // text for the turn arrived.
+  function markStart(el, ms = Date.now()) {
+    if (el.dataset.start) return;
+    el.dataset.start = ms;
+    el.querySelector(".time").textContent = `· ${istClock(ms)}`;
+  }
+
+  function markEnd(el, ms = Date.now()) {
+    if (!el.dataset.start || el.dataset.end) return;
+    el.dataset.end = ms;
+    const secs = ((ms - Number(el.dataset.start)) / 1000).toFixed(2);
+    el.querySelector(".time").textContent =
+      `· ${istClock(Number(el.dataset.start))} → ${istClock(ms)} · ${secs} s`;
+  }
+
+  function onUserTranscript({ text, final }) {
+    if (!userInterim) {
+      userInterim = addLine("user", "", "interim");
+      markStart(userInterim);
+    }
+    userInterim.querySelector(".text").textContent = text;
+    if (final) {
+      markEnd(userInterim);
+      userInterim.classList.remove("interim");
+      userInterim = null;
+      botLine = null; // the bot's next words belong to a new reply
+    }
+  }
+
+  // Pipecat sends each sentence (a segment) several times as it's spoken:
+  // "new", then "in-progress" with the words spoken so far, then "completed".
+  // Keep one span per segment and replace its text, so each sentence shows once
+  // and only the words actually spoken appear (an interruption cuts it short).
+  function onBotOutput(data) {
+    if (!data.text || data.output_type === "word" || data.aggregated_by === "word") return;
+    if (!botLine) botLine = { el: addLine("bot", ""), segments: new Map() };
+    const textEl = botLine.el.querySelector(".text");
+    const key = data.segment_id ?? `once-${botLine.segments.size}`;
+    let span = botLine.segments.get(key);
+    if (!span) {
+      span = textEl.appendChild(document.createElement("span"));
+      botLine.segments.set(key, span);
+    }
+    const spoken = data.spoken_status === "completed" || data.spoken_status === undefined
+      ? data.text
+      : data.spoken_progress?.accumulated_text ?? "";
+    span.textContent = spoken ? `${spoken} ` : "";
+  }
+
+  async function startCall() {
+    $("call").disabled = true;
+    log.innerHTML = "";
+    setStatus("Connecting…");
+    client = new PipecatClient({
+      transport: new SmallWebRTCTransport(),
+      enableMic: true,
+      enableCam: false,
+      callbacks: {
+        onConnected: () => setStatus("Connected. The bot will speak first."),
+        onDisconnected: () => endCall("Call ended."),
+        onError: (message) => setStatus(`Error: ${message?.data?.message ?? "see console"}`),
+        onTrackStarted: (track, participant) => {
+          // The participant may be missing for the bot's track; only skip our own mic.
+          if (track.kind === "audio" && !participant?.local) playBotAudio(track);
+        },
+        onUserTranscript,
+        onBotOutput,
+        onBotStartedSpeaking: () => {
+          if (!botLine) botLine = { el: addLine("bot", ""), segments: new Map() };
+          markStart(botLine.el);
+        },
+        onBotStoppedSpeaking: () => {
+          if (botLine) markEnd(botLine.el);
+          botLine = null;
+        },
+      },
+    });
+    try {
+      await client.connect({ webrtcRequestParams: { endpoint: `${BOT_URL}/api/offer` } });
+      $("hangup").disabled = false;
+      // In case the bot's track arrived before the callback was wired up.
+      const botTrack = client.tracks().bot?.audio;
+      if (botTrack) playBotAudio(botTrack);
+    } catch (e) {
+      console.error(e);
+      endCall(`Could not connect to the bot at ${BOT_URL}. Is bot.py running?`);
+    }
+  }
+
+  async function endCall(message = "Call ended.") {
+    const c = client;
+    client = null;
+    userInterim = botLine = null;
+    $("hangup").disabled = true;
+    $("call").disabled = false;
+    setStatus(message);
+    if (c) { try { await c.disconnect(); } catch (e) { console.error(e); } }
+  }
+
+  $("call").addEventListener("click", startCall);
+  $("hangup").addEventListener("click", () => endCall());
+</script>
+</body>
+</html>

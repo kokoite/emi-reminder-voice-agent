@@ -1,0 +1,3841 @@
+{
+  "run_id": "20261124_121915",
+  "today": "2026-11-24",
+  "agent_model": "gemini-3.5-flash-lite",
+  "sim_model": "gemini-2.5-flash",
+  "runs_per_scenario": 3,
+  "summary": {
+    "scenarios": {
+      "on_time": {
+        "outcome_accuracy": "1/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "1/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 3
+      },
+      "already_paid": {
+        "outcome_accuracy": "1/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "1/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 3
+      },
+      "promise_to_pay": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "3/3",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 4
+      },
+      "hardship": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 3
+      },
+      "dispute": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 4
+      },
+      "wrong_number": {
+        "outcome_accuracy": "1/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "1/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 1
+      },
+      "family_member": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "2/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "2/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 3
+      },
+      "callback": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "3/3",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 1
+      },
+      "rude_off_topic": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 4
+      },
+      "language_switch": {
+        "outcome_accuracy": "1/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "1/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 4
+      },
+      "asks_to_stop": {
+        "outcome_accuracy": "3/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "3/3",
+        "pass_all_runs": true,
+        "median_caller_turns": 3
+      },
+      "wrong_answer_first": {
+        "outcome_accuracy": "2/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "2/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 4
+      },
+      "date_said_differently": {
+        "outcome_accuracy": "2/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "2/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 3
+      },
+      "asks_for_human": {
+        "outcome_accuracy": "2/3",
+        "verification_before_disclosure": "3/3",
+        "promise_to_pay_capture": "-",
+        "all_checks": "2/3",
+        "pass_all_runs": false,
+        "median_caller_turns": 3
+      }
+    },
+    "overall": {
+      "outcome_accuracy": 0.738,
+      "verification_before_disclosure": 0.976,
+      "promise_to_pay_capture": 1.0,
+      "all_checks": 0.714,
+      "pass_all_runs": 0.429,
+      "median_caller_turns": 3.0
+    }
+  },
+  "runs": [
+    {
+      "scenario": "on_time",
+      "run": 1,
+      "call_id": "c_20261124_121915_ef17",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "payment_link_sent": true
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending four eight two one"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Ravi. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Mr. Kumar. Before we discuss your account, could you please confirm your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "Sure, my date of birth is March 12th, 1988."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Mr. Kumar. I'm calling about your two-wheeler loan EMI of twelve thousand five hundred rupees, which is due in three days on the twenty seventh of November. How would you like to clear this?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, right. I'd like to pay it on time. Can I get a payment link?"
+        },
+        {
+          "role": "bot",
+          "text": "I've sent the payment link to your registered mobile number ending in 4821. Thank you for making the payment on time, Mr. Kumar. Have a great day!"
+        }
+      ]
+    },
+    {
+      "scenario": "on_time",
+      "run": 2,
+      "call_id": "c_20261124_121915_ef4f",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "payment_link_sent": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121915_ef4f",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:49:22",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": true,
+        "escalate_to_human": false,
+        "notes": "Payment link sent to Ravi Kumar for his EMI due on Nov 27."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending four eight two one"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Payment link sent to Ravi Kumar for his EMI due on Nov 27.",
+            "outcome": "will_pay_on_time"
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Ravi. How may I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Mr. Kumar. I am calling regarding your EMI payment. For security purposes, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is the twelfth of March, 1988."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I'm calling about your two-wheeler loan EMI of twelve thousand five hundred rupees, which is due on the twenty-seventh of November. How would you like to clear this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Could you send me a payment link? That would be easiest."
+        },
+        {
+          "role": "bot",
+          "text": "I've sent the payment link to your mobile number ending in 4821. Thank you for your time, Mr. Kumar. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "on_time",
+      "run": 3,
+      "call_id": "c_20261124_121915_8e80",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "payment_link_sent": true
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending four eight two one"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Ravi. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Ravi, this is a reminder regarding your EMI with Lumen Finance. To help me share the details, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is the twelfth of March, nineteen eighty-eight."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Ravi. Your two-wheeler loan EMI of twelve thousand five hundred rupees is due on the twenty-seventh of November. Will you be able to make this payment on time?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, I will pay it on time. Can you send me a payment link?"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Ravi. I have sent the payment link to your mobile number ending in 4821. \n\nHave a wonderful day. Goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "already_paid",
+      "run": 1,
+      "call_id": "c_20261124_121915_80f4",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "already_paid"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121915_80f4",
+        "borrower_id": "b_04",
+        "at": "2026-11-24T17:49:21",
+        "verified": true,
+        "outcome": "already_paid",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Customer stated she already paid yesterday via the app."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Customer stated she already paid yesterday via the app.",
+            "outcome": "already_paid"
+          },
+          "success": true,
+          "data": {
+            "outcome": "already_paid",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Neha."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Neha. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "It's January 30th, 1990."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks for confirming. Your EMI of four thousand nine hundred ninety nine rupees for your consumer durable loan is due on the twenty sixth of November. Will you be able to make the payment by then?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, I actually already paid it yesterday through the app."
+        },
+        {
+          "role": "bot",
+          "text": "That's wonderful, Neha. Thank you for clearing that up, and thanks for being with Lumen Finance. Have a great day!"
+        }
+      ]
+    },
+    {
+      "scenario": "already_paid",
+      "run": 2,
+      "call_id": "c_20261124_121922_03f8",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "already_paid"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Neha."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Neha. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "It's the thirtieth of January 1990."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks, Neha. Your consumer durable loan EMI of four thousand nine hundred ninety nine rupees is due on the twenty sixth of November. How would you like to make the payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, I paid this yesterday, through the app."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for letting me know, Neha. Sometimes it takes a little time to reflect in our system. I'll make a note of that. Have a great day!"
+        }
+      ]
+    },
+    {
+      "scenario": "already_paid",
+      "run": 3,
+      "call_id": "c_20261124_121923_cc1e",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "already_paid"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Neha."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Neha. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "It's January 30th, 1990."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks for confirming. Your EMI of four thousand nine hundred ninety nine rupees for your consumer durable loan is due on the twenty sixth of November. How would you like to make the payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, I already paid that yesterday through your app."
+        },
+        {
+          "role": "bot",
+          "text": "That's wonderful, Neha. Thank you for making the payment on time. It might take a little while to reflect in our system. Have a great day!"
+        }
+      ]
+    },
+    {
+      "scenario": "promise_to_pay",
+      "run": 1,
+      "call_id": "c_20261124_121924_46f6",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "promise_to_pay"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "promise_to_pay_date": "2026-12-01"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121924_46f6",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:49:32",
+        "verified": true,
+        "outcome": "promise_to_pay",
+        "promise_to_pay_date": "2026-12-01",
+        "callback_at": null,
+        "payment_link_sent": true,
+        "escalate_to_human": false,
+        "notes": "Promised to pay on 2026-12-01. Payment link sent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending seven three one four"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "outcome": "promise_to_pay",
+            "notes": "Promised to pay on 2026-12-01. Payment link sent.",
+            "promise_to_pay_date": "2026-12-01"
+          },
+          "success": true,
+          "data": {
+            "outcome": "promise_to_pay",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Priya. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Priya, I'm calling about your EMI. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is the twenty-fifth of July, nineteen ninety-two."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Priya. Your personal loan EMI of eighteen thousand seven hundred fifty rupees was due on the nineteenth of November and is currently five days overdue. When would you be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I'm so sorry, I'm a bit stressed this month. I can pay the full amount on Tuesday, the first of December."
+        },
+        {
+          "role": "bot",
+          "text": "I completely understand, Priya. Thank you for letting me know. I've noted that you will make the payment on the first of December. Would you like me to send a payment link to your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, please. That would be helpful."
+        },
+        {
+          "role": "bot",
+          "text": "I've sent the payment link to your registered mobile number ending in seven three one four. Thank you, Priya. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "promise_to_pay",
+      "run": 2,
+      "call_id": "c_20261124_121925_3497",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "promise_to_pay"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "promise_to_pay_date": "2026-12-01"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121925_3497",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:49:31",
+        "verified": true,
+        "outcome": "promise_to_pay",
+        "promise_to_pay_date": "2026-12-01",
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Priya promised to pay the full amount of 18,750 rupees on 2026-12-01 due to a tight month."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Priya promised to pay the full amount of 18,750 rupees on 2026-12-01 due to a tight month.",
+            "promise_to_pay_date": "2026-12-01",
+            "outcome": "promise_to_pay",
+            "escalate_to_human": false
+          },
+          "success": true,
+          "data": {
+            "outcome": "promise_to_pay",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Priya. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Priya. Before we discuss your loan details, could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "Sure, my date of birth is July 25th, 1992."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Priya. I'm calling about your personal loan EMI of eighteen thousand seven hundred fifty rupees, which was due on the nineteenth of November and is currently five days overdue. Could you let me know when you'll be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, I am so sorry about that. I've had a really tight month, and I just don't have the funds right now. I can pay the full amount on Tuesday, December 1st."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Priya, I have noted that you will make the payment on the first of December. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "promise_to_pay",
+      "run": 3,
+      "call_id": "c_20261124_121929_acb3",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "promise_to_pay"
+        ],
+        "verified": true,
+        "escalate_to_human": false,
+        "promise_to_pay_date": "2026-12-01"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121929_acb3",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:49:37",
+        "verified": true,
+        "outcome": "promise_to_pay",
+        "promise_to_pay_date": "2026-12-01",
+        "callback_at": null,
+        "payment_link_sent": true,
+        "escalate_to_human": false,
+        "notes": "Promised to pay on 2026-12-01. Payment link sent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending seven three one four"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "promise_to_pay",
+            "promise_to_pay_date": "2026-12-01",
+            "escalate_to_human": false,
+            "notes": "Promised to pay on 2026-12-01. Payment link sent."
+          },
+          "success": true,
+          "data": {
+            "outcome": "promise_to_pay",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is she. How may I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Ms. Sharma. I'm calling regarding your EMI due to Lumen Finance. For security purposes, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, right. My date of birth is July twenty fifth, nineteen ninety two."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I'm calling about your personal loan EMI of eighteen thousand seven hundred fifty rupees, which was due on the nineteenth of November and is currently five days overdue. \n\nWhen might we expect your payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I'm so sorry, I've had a really tight month. I can pay the full amount on Tuesday, December first."
+        },
+        {
+          "role": "bot",
+          "text": "I understand, Ms. Sharma. Thank you for letting me know. I have noted your promise to pay the full amount on the first of December. \n\nWould you like me to send a payment link to your mobile number to make it easy for you when you're ready?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, please. That would be very helpful."
+        },
+        {
+          "role": "bot",
+          "text": "I've sent the payment link to your registered mobile number. Thank you for your time today, Ms. Sharma, and have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "hardship",
+      "run": 1,
+      "call_id": "c_20261124_121930_5155",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "hardship"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121930_5155",
+        "borrower_id": "b_03",
+        "at": "2026-11-24T17:49:37",
+        "verified": true,
+        "outcome": "hardship",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower lost their job last month, unable to pay at the moment, and asked for a late fee waiver. Escalated to human."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1985-11-02"
+          },
+          "success": true,
+          "data": {
+            "name": "Arjun Mehta",
+            "loan_type": "home loan",
+            "amount_due": "one lakh twenty four thousand rupees",
+            "due_date": "the fourth of November",
+            "status": "twenty days overdue"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": true,
+            "notes": "Borrower lost their job last month, unable to pay at the moment, and asked for a late fee waiver. Escalated to human.",
+            "outcome": "hardship"
+          },
+          "success": true,
+          "data": {
+            "outcome": "hardship",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Arjun Mehta?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Arjun."
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Arjun. To help me access your account details securely, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "It's the second of November, 1985."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Arjun. I'm calling about your home loan EMI of one lakh twenty four thousand rupees, which was due on the fourth of November and is now twenty days overdue. When would you be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I... I lost my job last month, so I can't pay it right now. Could the late fee be waived?"
+        },
+        {
+          "role": "bot",
+          "text": "I completely understand, Arjun, and I'm sorry to hear that you're going through this. I can't waive fees myself, but I will connect you with a human agent who can discuss your situation and see what options might be available. Please hold for a moment."
+        }
+      ]
+    },
+    {
+      "scenario": "hardship",
+      "run": 2,
+      "call_id": "c_20261124_121932_fff7",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "hardship"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121932_fff7",
+        "borrower_id": "b_03",
+        "at": "2026-11-24T17:49:39",
+        "verified": true,
+        "outcome": "hardship",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower lost job last month and requested hardship escalation regarding fee waiver and repayment options."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1985-11-02"
+          },
+          "success": true,
+          "data": {
+            "name": "Arjun Mehta",
+            "loan_type": "home loan",
+            "amount_due": "one lakh twenty four thousand rupees",
+            "due_date": "the fourth of November",
+            "status": "twenty days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": true,
+            "outcome": "hardship",
+            "notes": "Borrower lost job last month and requested hardship escalation regarding fee waiver and repayment options."
+          },
+          "success": true,
+          "data": {
+            "outcome": "hardship",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Arjun Mehta?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Arjun."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Arjun. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is November 2nd, 1985."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I'm calling about your home loan EMI of one lakh twenty four thousand rupees, which was due on the fourth of November and is currently twenty days overdue. How would you like to clear this?"
+        },
+        {
+          "role": "caller",
+          "text": "I... I can't pay right now. I lost my job last month. Can the late fee be waived?"
+        },
+        {
+          "role": "bot",
+          "text": "I'm really sorry to hear that you're going through a tough time, Arjun. I completely understand. I cannot waive the fees myself, but I can certainly escalate your case to our human team so they can look into your situation and discuss possible options with you. Would you like me to do that?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, please. Thank you."
+        },
+        {
+          "role": "bot",
+          "text": "I've noted that and escalated your case to our team. Someone will reach out to assist you soon. Take care, Arjun. Goodbye."
+        }
+      ]
+    },
+    {
+      "scenario": "hardship",
+      "run": 3,
+      "call_id": "c_20261124_121933_ca65",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "hardship"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121933_ca65",
+        "borrower_id": "b_03",
+        "at": "2026-11-24T17:49:39",
+        "verified": true,
+        "outcome": "hardship",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower lost job last month and asked about late fee waiver. Escalated to human."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1985-11-02"
+          },
+          "success": true,
+          "data": {
+            "name": "Arjun Mehta",
+            "loan_type": "home loan",
+            "amount_due": "one lakh twenty four thousand rupees",
+            "due_date": "the fourth of November",
+            "status": "twenty days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": true,
+            "notes": "Borrower lost job last month and asked about late fee waiver. Escalated to human.",
+            "outcome": "hardship"
+          },
+          "success": true,
+          "data": {
+            "outcome": "hardship",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Arjun Mehta?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Arjun."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Mr. Mehta. For security purposes, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "It's the second of November, 1985."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Mr. Mehta. I'm calling about your home loan EMI of one lakh twenty four thousand rupees, which was due on the fourth of November and is now twenty days overdue. Could you please let me know when you will be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I actually lost my job last month, so I'm not sure when I can pay. Is there any way the late fee can be waived?"
+        },
+        {
+          "role": "bot",
+          "text": "I'm really sorry to hear about your situation, Mr. Mehta. I understand this is difficult. I cannot waive the fees myself, but let me connect you with a human agent who can discuss your options further. Please hold on for a moment."
+        }
+      ]
+    },
+    {
+      "scenario": "dispute",
+      "run": 1,
+      "call_id": "c_20261124_121937_a2bc",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "dispute"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121937_a2bc",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:49:46",
+        "verified": true,
+        "outcome": "dispute",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower disputes the EMI amount and asked to speak with a human agent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1979-09-14"
+          },
+          "success": true,
+          "data": {
+            "name": "Vikram Singh",
+            "loan_type": "car loan",
+            "amount_due": "twenty one thousand three hundred rupees",
+            "due_date": "the sixteenth of November",
+            "status": "eight days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "dispute",
+            "escalate_to_human": true,
+            "notes": "Borrower disputes the EMI amount and asked to speak with a human agent."
+          },
+          "success": true,
+          "data": {
+            "outcome": "dispute",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Vikram. I'm calling regarding your EMI payment. To keep your information secure, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is September 14th, 1979."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks, Vikram. Your car loan EMI of twenty one thousand three hundred rupees was due on the sixteenth of November, and it is currently eight days overdue. Could you let me know when you'll be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "That amount is wrong. I think my EMI is lower than that. I believe I'm being overcharged."
+        },
+        {
+          "role": "bot",
+          "text": "I understand your concern, Vikram. I can certainly connect you with a human agent who can look into the details of your EMI calculation for you. Shall I transfer your call?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, please."
+        },
+        {
+          "role": "bot",
+          "text": "I am connecting you to a team member now. Please hold."
+        }
+      ]
+    },
+    {
+      "scenario": "dispute",
+      "run": 2,
+      "call_id": "c_20261124_121937_29cc",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "dispute"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121937_29cc",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:49:46",
+        "verified": true,
+        "outcome": "dispute",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower disputed the EMI amount of 21,300 rupees and requested escalation to a human agent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1979-09-14"
+          },
+          "success": true,
+          "data": {
+            "name": "Vikram Singh",
+            "loan_type": "car loan",
+            "amount_due": "twenty one thousand three hundred rupees",
+            "due_date": "the sixteenth of November",
+            "status": "eight days overdue"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": true,
+            "outcome": "dispute",
+            "notes": "Borrower disputed the EMI amount of 21,300 rupees and requested escalation to a human agent."
+          },
+          "success": true,
+          "data": {
+            "outcome": "dispute",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Vikram. I'm calling regarding your EMI payment. To keep your information secure, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "It's the fourteenth of September, nineteen seventy-nine."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Vikram. I see your car loan EMI of twenty one thousand three hundred rupees was due on the sixteenth of November, and it is currently eight days overdue. Could you please let me know when you'll be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Twenty one thousand three hundred? That can't be right. I think my EMI is lower than that. I was overcharged."
+        },
+        {
+          "role": "bot",
+          "text": "I understand your concern about the amount, Vikram. I can certainly connect you with a human agent who can look into this for you and help sort it out. Would you like me to escalate this to them?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, please. I need to speak to someone about this."
+        },
+        {
+          "role": "bot",
+          "text": "I'll have a human agent connect with you to review the amount. Thank you for your time, Vikram, and have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "dispute",
+      "run": 3,
+      "call_id": "c_20261124_121939_a77a",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "dispute"
+        ],
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_121939_a77a",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:49:47",
+        "verified": true,
+        "outcome": "dispute",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower disputes the EMI amount as being incorrect and believes he is being overcharged. Escalated to a human agent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1979-09-14"
+          },
+          "success": true,
+          "data": {
+            "name": "Vikram Singh",
+            "loan_type": "car loan",
+            "amount_due": "twenty one thousand three hundred rupees",
+            "due_date": "the sixteenth of November",
+            "status": "eight days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": true,
+            "outcome": "dispute",
+            "notes": "Borrower disputes the EMI amount as being incorrect and believes he is being overcharged. Escalated to a human agent."
+          },
+          "success": true,
+          "data": {
+            "outcome": "dispute",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram. What is this regarding?"
+        },
+        {
+          "role": "bot",
+          "text": "This call is regarding your EMI with Lumen Finance. To help me share the details, could you please confirm your date of birth?"
+        },
+        {
+          "role": "caller",
+          "text": "It's the fourteenth of September, nineteen seventy-nine."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Mr. Singh. Your car loan EMI of twenty one thousand three hundred rupees was due on the sixteenth of November, and it is now eight days overdue. How would you like to clear this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Twenty-one thousand? That can't be right. I think my EMI is lower than that. I believe I'm being overcharged."
+        },
+        {
+          "role": "bot",
+          "text": "I understand, Mr. Singh. Let me connect you with a human agent who can check the details for you. Please hold the line."
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_number",
+      "run": 1,
+      "call_id": "c_20261124_121940_75bb",
+      "ended_by": "end_call",
+      "caller_turns": 1,
+      "expected": {
+        "outcome": [
+          "wrong_number"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121940_75bb",
+        "borrower_id": "b_08",
+        "at": "2026-11-24T17:49:42",
+        "verified": false,
+        "outcome": "wrong_number",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Wrong number reached, someone else answered saying it's not Anjali Gupta."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Wrong number reached, someone else answered saying it's not Anjali Gupta.",
+            "escalate_to_human": false,
+            "outcome": "wrong_number"
+          },
+          "success": true,
+          "data": {
+            "outcome": "wrong_number",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 3
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "No, this isn't Anjali. You have the wrong number."
+        },
+        {
+          "role": "bot",
+          "text": "I am so sorry to have disturbed you. Have a good day. Goodbye."
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_number",
+      "run": 2,
+      "call_id": "c_20261124_121943_42d4",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 1,
+      "expected": {
+        "outcome": [
+          "wrong_number"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "Uh, no. This is Karan."
+        },
+        {
+          "role": "bot",
+          "text": "Ah, I'm sorry to have disturbed you, Karan. Could I please request Anjali Gupta to call us back? Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_number",
+      "run": 3,
+      "call_id": "c_20261124_121946_7914",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 1,
+      "expected": {
+        "outcome": [
+          "wrong_number"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "No, this isn't Anjali. You have the wrong number."
+        },
+        {
+          "role": "bot",
+          "text": "I'm so sorry to have disturbed you. Have a good day. Goodbye.locals {\n  outage_group_name = \"${var.project_name}-${var.environment}-outage\"\n}\n\nresource \"aws_sns_topic\" \"outage\" {\n  name = local.outage_group_name\n}\n\nresource \"aws_sns_topic_subscription\" \"outage_email\" {\n  count     = length(var.outage_email_list)\n  topic_arn = aws_sns_topic.outage.arn\n  protocol  = \"email\"\n  endpoint  = var.outage_email_list[count.index]\n}\n\nresource \"aws_cloudwatch_metric_alarm\" \"outage\" {\n  alarm_name          = \"${local.outage_group_name}-alarm\"\n  comparison_operator = \"LessThanThreshold\"\n  evaluation_periods  = \"1\"\n  metric_name         = \"HealthyHostCount\"\n  namespace           = \"AWS/ApplicationELB\"\n  period              = \"60\"\n  statistic           = \"Average\"\n  threshold           = \"1\"\n  alarm_description   = \"This metric monitors the health of the target group and triggers an alarm if there are no healthy hosts.\"\n  alarm_actions       = [aws_sns_topic.outage.arn]\n\n  dimensions = {\n    TargetGroup  = var.alb_target_group_arn_suffix\n    LoadBalancer = var.alb_arn_suffix\n  }\n}"
+        }
+      ]
+    },
+    {
+      "scenario": "family_member",
+      "run": 1,
+      "call_id": "c_20261124_121946_72e1",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "third_party"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121946_72e1",
+        "borrower_id": "b_08",
+        "at": "2026-11-24T17:49:52",
+        "verified": false,
+        "outcome": "third_party",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Third party answered (mother), refused to share details, mother offered date of birth but was declined per privacy guardrails."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Third party answered (mother), refused to share details, mother offered date of birth but was declined per privacy guardrails.",
+            "outcome": "third_party"
+          },
+          "success": true,
+          "data": {
+            "outcome": "third_party",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 6
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "Hello? No, this is not Anjali. This is her mother speaking. Can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello. Since you're not Anjali, I won't be able to share any details. Could you please ask Anjali to give us a callback when she is available? Thank you, and have a good day."
+        },
+        {
+          "role": "caller",
+          "text": "Wait, wait! Don't go. She's not home right now, can I take a message? Is this about money she owes? I can pass it on."
+        },
+        {
+          "role": "bot",
+          "text": "I understand, but for privacy reasons, I can only discuss the account directly with Anjali. Please have her return the call when she gets a chance. Thank you so much, and have a wonderful day."
+        },
+        {
+          "role": "caller",
+          "text": "No, please, just tell me. Is it a big amount? I'm her mother, I can help her. I know her date of birth, if that helps. It's April eighth, nineteen eighty-seven."
+        },
+        {
+          "role": "bot",
+          "text": "I appreciate you wanting to help, but I'm only able to discuss account details directly with Anjali. Please have her reach out to us directly. Goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "family_member",
+      "run": 2,
+      "call_id": "c_20261124_121947_0b8e",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "third_party"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121947_0b8e",
+        "borrower_id": "b_08",
+        "at": "2026-11-24T17:49:53",
+        "verified": false,
+        "outcome": "third_party",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Spoke to borrower's mother, who offered date of birth. Declined to share details, asked mother to have Anjali call back."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": false,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [
+        "Hello. This call is regarding Anjali's personal loan account with Lumen Finance. As this is confidential financial information, I won't be able to share any details with you. Could you please ask Anjali to call us back at her earliest convenience? Thank you, and have a good day."
+      ],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "outcome": "third_party",
+            "notes": "Spoke to borrower's mother, who offered date of birth. Declined to share details, asked mother to have Anjali call back."
+          },
+          "success": true,
+          "data": {
+            "outcome": "third_party",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "No, Anjali isn't here. This is her mother speaking. Can I ask what this is regarding?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello. This call is regarding Anjali's personal loan account with Lumen Finance. As this is confidential financial information, I won't be able to share any details with you. Could you please ask Anjali to call us back at her earliest convenience? Thank you, and have a good day."
+        },
+        {
+          "role": "caller",
+          "text": "Oh, a personal loan? She didn't mention anything to me. Is there a problem? How much does she owe you? I can pass on a message."
+        },
+        {
+          "role": "bot",
+          "text": "I understand, but per our security policy, I can only discuss account details directly with Anjali herself. I'd appreciate it if you could just ask her to give us a call back. Thank you for your time."
+        },
+        {
+          "role": "caller",
+          "text": "But she's not home right now, and I'm worried. Can you at least tell me what this is about? Is she in trouble? I know her date of birth if that helps."
+        },
+        {
+          "role": "bot",
+          "text": "I appreciate you wanting to help, but I cannot share any account details or accept verification from anyone other than Anjali. Please have her return our call when she is available. Goodbye."
+        }
+      ]
+    },
+    {
+      "scenario": "family_member",
+      "run": 3,
+      "call_id": "c_20261124_121947_bd36",
+      "ended_by": "end_call",
+      "caller_turns": 2,
+      "expected": {
+        "outcome": [
+          "third_party"
+        ],
+        "verified": false,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121947_bd36",
+        "borrower_id": "b_08",
+        "at": "2026-11-24T17:49:51",
+        "verified": false,
+        "outcome": "third_party",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Spoke to borrower's mother. Left message for Anjali to call back."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Spoke to borrower's mother. Left message for Anjali to call back.",
+            "outcome": "third_party"
+          },
+          "success": true,
+          "data": {
+            "outcome": "third_party",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Anjali Gupta?"
+        },
+        {
+          "role": "caller",
+          "text": "No, this is not Anjali. This is her mother speaking. May I ask what this is regarding?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello. I'm calling from Lumen Finance regarding a quick administrative matter about an EMI. Could you please ask Anjali to return our call when she is available? Thank you, and have a good day."
+        },
+        {
+          "role": "caller",
+          "text": "Oh, an EMI? She's not home right now, but I can pass on a message. Is everything alright? How much is it?"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you. I'm afraid I can only discuss account details with Anjali directly. Please ask her to call Lumen Finance back at her earliest convenience. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "callback",
+      "run": 1,
+      "call_id": "c_20261124_121949_c199",
+      "ended_by": "end_call",
+      "caller_turns": 2,
+      "expected": {
+        "outcome": [
+          "callback_requested"
+        ],
+        "escalate_to_human": false,
+        "callback_at": "2026-11-25T18:00"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121949_c199",
+        "borrower_id": "b_07",
+        "at": "2026-11-24T17:49:53",
+        "verified": false,
+        "outcome": "callback_requested",
+        "promise_to_pay_date": null,
+        "callback_at": "2026-11-25T18:00",
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Rahul Verma is driving, requested callback tomorrow at 6 PM."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Rahul Verma is driving, requested callback tomorrow at 6 PM.",
+            "outcome": "callback_requested",
+            "escalate_to_human": false,
+            "callback_at": "2026-11-25T18:00"
+          },
+          "success": true,
+          "data": {
+            "outcome": "callback_requested",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Rahul Verma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Rahul. Sorry, I’m driving right now, can I call you back?"
+        },
+        {
+          "role": "bot",
+          "text": "No problem at all, I completely understand. Would you like me to call you back later today, or is there a better time?"
+        },
+        {
+          "role": "caller",
+          "text": "Can you please call me back tomorrow at 6 pm?"
+        },
+        {
+          "role": "bot",
+          "text": "Alright, I'll call you tomorrow at 6 PM. Have a safe drive, goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "callback",
+      "run": 2,
+      "call_id": "c_20261124_121952_8d1a",
+      "ended_by": "end_call",
+      "caller_turns": 1,
+      "expected": {
+        "outcome": [
+          "callback_requested"
+        ],
+        "escalate_to_human": false,
+        "callback_at": "2026-11-25T18:00"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121952_8d1a",
+        "borrower_id": "b_07",
+        "at": "2026-11-24T17:49:54",
+        "verified": false,
+        "outcome": "callback_requested",
+        "promise_to_pay_date": null,
+        "callback_at": "2026-11-25T18:00",
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Rahul Verma is driving and asked for a callback tomorrow at 6 PM."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "callback_requested",
+            "notes": "Rahul Verma is driving and asked for a callback tomorrow at 6 PM.",
+            "callback_at": "2026-11-25T18:00",
+            "escalate_to_human": false
+          },
+          "success": true,
+          "data": {
+            "outcome": "callback_requested",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Rahul Verma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Rahul. Sorry, I’m driving right now. Can you call me back tomorrow at 6 PM?"
+        },
+        {
+          "role": "bot",
+          "text": "I understand. I'll call you back tomorrow at 6 PM. Have a safe drive. Goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "callback",
+      "run": 3,
+      "call_id": "c_20261124_121953_a1f7",
+      "ended_by": "end_call",
+      "caller_turns": 1,
+      "expected": {
+        "outcome": [
+          "callback_requested"
+        ],
+        "escalate_to_human": false,
+        "callback_at": "2026-11-25T18:00"
+      },
+      "outcome": {
+        "call_id": "c_20261124_121953_a1f7",
+        "borrower_id": "b_07",
+        "at": "2026-11-24T17:49:55",
+        "verified": false,
+        "outcome": "callback_requested",
+        "promise_to_pay_date": null,
+        "callback_at": "2026-11-25T18:00",
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Rahul is driving and requested a callback tomorrow at 6 PM."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": true
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "callback_requested",
+            "callback_at": "2026-11-25T18:00",
+            "escalate_to_human": false,
+            "notes": "Rahul is driving and requested a callback tomorrow at 6 PM."
+          },
+          "success": true,
+          "data": {
+            "outcome": "callback_requested",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Rahul Verma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Rahul. Sorry, I’m driving right now. Could you call me back tomorrow at 6 PM?"
+        },
+        {
+          "role": "bot",
+          "text": "No problem at all, Rahul. I will call you back tomorrow at 6 PM. Have a safe drive, goodbye."
+        }
+      ]
+    },
+    {
+      "scenario": "rude_off_topic",
+      "run": 1,
+      "call_id": "c_20261124_121954_50f4",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time",
+          "asked_to_stop"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121954_50f4",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:50:01",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Borrower promised to pay on time and asked to stop calling."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "will_pay_on_time",
+            "escalate_to_human": false,
+            "notes": "Borrower promised to pay on time and asked to stop calling."
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Ravi. What do you want now?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Ravi, I'm calling about your EMI payment with Lumen Finance. To discuss the details securely, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Ugh, again with this? It's March twelfth, nineteen eighty-eight. Can we make this quick?"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for verifying, Ravi. Your two-wheeler loan EMI of twelve thousand five hundred rupees is due on the twenty-seventh of November. How would you like to handle this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Payment, payment, always about payment. Did you guys even watch the match yesterday? What a choke!"
+        },
+        {
+          "role": "bot",
+          "text": "I can understand cricket is exciting, Ravi, but I do need to keep our focus on your EMI. Would you like me to send you a payment link so you can clear the twelve thousand five hundred rupees due on the twenty-seventh?"
+        },
+        {
+          "role": "caller",
+          "text": "Look, I'll pay on time, alright? Just stop calling me about it. Go away."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming that you'll pay on time, Ravi. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "rude_off_topic",
+      "run": 2,
+      "call_id": "c_20261124_121954_3f71",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time",
+          "asked_to_stop"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121954_3f71",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:50:01",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Customer confirmed he will pay on time."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Customer confirmed he will pay on time.",
+            "outcome": "will_pay_on_time"
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Ugh, yes, this is Ravi. What now?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Mr. Kumar. I am calling from Lumen Finance regarding your EMI. For security, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Look, I know why you're calling. What about yesterday's match? Insane, right? My birth date is March 12, 1988."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Mr. Kumar. Regarding the match, let's stick to the matter at hand. Your EMI of twelve thousand five hundred rupees for your two-wheeler loan is due on the twenty seventh of November. Will you be able to make the payment on time?"
+        },
+        {
+          "role": "caller",
+          "text": "Of course, I'll pay on time! You people call me every single month. It's annoying. Now, if you'll excuse me, I'm busy."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Mr. Kumar. We appreciate your payment. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "rude_off_topic",
+      "run": 3,
+      "call_id": "c_20261124_121955_ae95",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time",
+          "asked_to_stop"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121955_ae95",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:50:03",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Ravi Kumar confirmed he will pay on time and asked us to stop calling."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 2
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Ravi Kumar confirmed he will pay on time and asked us to stop calling.",
+            "escalate_to_human": false,
+            "outcome": "will_pay_on_time"
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Ugh, yeah, this is Ravi. What do you want now?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Ravi. I'm calling from Lumen Finance to remind you about your EMI. \n\nTo help me share the correct details, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Are you serious? You're calling me about this again? It's March 12, 1988. Can we make this quick?"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Ravi. I understand you're busy. I'm calling about your two-wheeler loan EMI of twelve thousand five hundred rupees, which is due on the twenty seventh of November. \n\nWill you be able to make this payment on time?"
+        },
+        {
+          "role": "caller",
+          "text": "Of course, I'll pay it on time! Did you even watch the match yesterday? What a disaster!"
+        },
+        {
+          "role": "bot",
+          "text": "I appreciate you confirming that, Ravi. Thanks for taking care of it. \n\nWould you like me to send a payment link to your registered mobile number for your convenience?"
+        },
+        {
+          "role": "caller",
+          "text": "No, just... no. I'll pay it. Just stop calling me, alright? I'll pay it on time. Now go away."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for your time, Ravi. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "language_switch",
+      "run": 1,
+      "call_id": "c_20261124_121956_7fe6",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_121956_7fe6",
+        "borrower_id": "b_06",
+        "at": "2026-11-24T17:50:06",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": true,
+        "escalate_to_human": false,
+        "notes": "Sunita Devi confirmed she will pay her EMI of six thousand two hundred rupees on time by the due date of 28 November. Payment link sent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1983-05-06"
+          },
+          "success": true,
+          "data": {
+            "name": "Sunita Devi",
+            "loan_type": "gold loan",
+            "amount_due": "six thousand two hundred rupees",
+            "due_date": "the twenty eighth of November",
+            "status": "due in four days"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending one one four two"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "will_pay_on_time",
+            "escalate_to_human": false,
+            "notes": "Sunita Devi confirmed she will pay her EMI of six thousand two hundred rupees on time by the due date of 28 November. Payment link sent."
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Sunita Devi?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Sunita Devi speaking."
+        },
+        {
+          "role": "bot",
+          "text": "Namaste Sunita ji. To ensure your account security, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Namaste. Main Hindi mein baat karna zyada comfortable rahungi. Meri janam tithi 6 May 1983 hai."
+        },
+        {
+          "role": "bot",
+          "text": "Dhanyawad Sunita ji, verification ho gaya hai. Aapka gold loan ka six thousand two hundred rupees ka EMI twenty eighth November ko due hai. Kya aap iska bhugtaan time par kar dengi?"
+        },
+        {
+          "role": "caller",
+          "text": "Haan, main EMI ka bhugtaan samay par kar dungi."
+        },
+        {
+          "role": "bot",
+          "text": "Maine aapke registered mobile number par payment link bhej diya hai. Iske zariye aap aasaani se bhugtaan kar sakti hain. Lumen Finance se baat karne ke liye dhanyawad, aapka din shubh ho."
+        },
+        {
+          "role": "caller",
+          "text": "Dhanyawad. Aapka din bhi shubh ho."
+        },
+        {
+          "role": "bot",
+          "text": "Namaste."
+        }
+      ]
+    },
+    {
+      "scenario": "language_switch",
+      "run": 2,
+      "call_id": "c_20261124_122002_6a6c",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1983-05-06"
+          },
+          "success": true,
+          "data": {
+            "name": "Sunita Devi",
+            "loan_type": "gold loan",
+            "amount_due": "six thousand two hundred rupees",
+            "due_date": "the twenty eighth of November",
+            "status": "due in four days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending one one four two"
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Sunita Devi?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Sunita Devi."
+        },
+        {
+          "role": "bot",
+          "text": "Namaste, Sunita ji. For security, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Namaste. I am more comfortable speaking in Hindi, is that okay? Meri janam tithi hai 6 May 1983."
+        },
+        {
+          "role": "bot",
+          "text": "Ji bilkul, Sunita ji. Aapke gold loan ka EMI hai 6,200 rupees, aur yeh 28 November ko due hai. \n\nAap iska payment kab tak kar payengi?"
+        },
+        {
+          "role": "caller",
+          "text": "Main iska payment samay par kar dungi."
+        },
+        {
+          "role": "bot",
+          "text": "Bahut bahut shukriya, Sunita ji. Main aapko ek payment link bhej deti hoon taaki aap aasani se payment kar sakein."
+        },
+        {
+          "role": "caller",
+          "text": "Theek hai."
+        },
+        {
+          "role": "bot",
+          "text": "Maine payment link aapke registered mobile number par bhej diya hai. \n\nDhanyawad, Sunita ji, Lumen Finance se baat karne ke liye. Aapka din shubh ho."
+        }
+      ]
+    },
+    {
+      "scenario": "language_switch",
+      "run": 3,
+      "call_id": "c_20261124_122002_ec17",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 5,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1983-05-06"
+          },
+          "success": true,
+          "data": {
+            "name": "Sunita Devi",
+            "loan_type": "gold loan",
+            "amount_due": "six thousand two hundred rupees",
+            "due_date": "the twenty eighth of November",
+            "status": "due in four days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending one one four two"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Sunita Devi?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Sunita Devi."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Ms. Devi. For verification, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Actually, if it's okay, I'd be more comfortable speaking in Hindi."
+        },
+        {
+          "role": "bot",
+          "text": "Bilkul, hum Hindi mein baat kar sakte hain. Sunita ji, aapse verify karne ke liye, kya aap apni date of birth ya apne registered mobile number ke aakhiri chaar ankh bata sakti hain?"
+        },
+        {
+          "role": "caller",
+          "text": "Meri date of birth hai 6 May 1983."
+        },
+        {
+          "role": "bot",
+          "text": "Shukriya, Sunita ji. Aapke gold loan ka six thousand two hundred rupees ka EMI twenty-eighth November ko due hai. Aap iska bhugtan kab tak kar payengi?"
+        },
+        {
+          "role": "caller",
+          "text": "Haan, main iska bhugtan samay par kar dungi."
+        },
+        {
+          "role": "bot",
+          "text": "Bahut achha, Sunita ji. Samay par bhugtan karne ke liye shukriya. Kya main aapko ek payment link SMS par bhej doon?"
+        },
+        {
+          "role": "caller",
+          "text": "Haan, bhej dijiye."
+        },
+        {
+          "role": "bot",
+          "text": "Maine payment link aapke registered mobile number par bhej diya hai. Lumen Finance se baat karne ke liye shukriya, apka din shubh ho."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_to_stop",
+      "run": 1,
+      "call_id": "c_20261124_122004_f2f6",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "asked_to_stop"
+        ],
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122004_f2f6",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:50:10",
+        "verified": true,
+        "outcome": "asked_to_stop",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Borrower asked to end the call and refused to discuss the EMI."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "outcome": "asked_to_stop",
+            "notes": "Borrower asked to end the call and refused to discuss the EMI."
+          },
+          "success": true,
+          "data": {
+            "outcome": "asked_to_stop",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is she."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you. To help me access your account details, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "July 25th, 1992."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I'm calling about your personal loan EMI of eighteen thousand seven hundred fifty rupees, which was due on the nineteenth of November and is currently five days overdue. How would you like to clear this?"
+        },
+        {
+          "role": "caller",
+          "text": "I don't want to talk about this. Please end the call."
+        },
+        {
+          "role": "bot",
+          "text": "I understand. Have a good day. Goodbye."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_to_stop",
+      "run": 2,
+      "call_id": "c_20261124_122007_dc99",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "asked_to_stop"
+        ],
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122007_dc99",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:50:12",
+        "verified": true,
+        "outcome": "asked_to_stop",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Borrower asked to end the call and refused to discuss."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "asked_to_stop",
+            "notes": "Borrower asked to end the call and refused to discuss.",
+            "escalate_to_human": false
+          },
+          "success": true,
+          "data": {
+            "outcome": "asked_to_stop",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 3
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Priya."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Priya. To keep your account secure, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Twenty fifth July 1992."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks for confirming. I'm calling about your personal loan EMI of eighteen thousand seven hundred fifty rupees, which was due on the nineteenth of November and is now five days overdue. How would you like to clear this?"
+        },
+        {
+          "role": "caller",
+          "text": "I don't want to discuss this. Please end the call."
+        },
+        {
+          "role": "bot",
+          "text": "I understand. I'll note that and end the call now. Goodbye, Priya."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_to_stop",
+      "run": 3,
+      "call_id": "c_20261124_122011_0fa7",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "asked_to_stop"
+        ],
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122011_0fa7",
+        "borrower_id": "b_02",
+        "at": "2026-11-24T17:50:16",
+        "verified": true,
+        "outcome": "asked_to_stop",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Borrower asked to end the call and refused to discuss the payment."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1992-07-25"
+          },
+          "success": true,
+          "data": {
+            "name": "Priya Sharma",
+            "loan_type": "personal loan",
+            "amount_due": "eighteen thousand seven hundred fifty rupees",
+            "due_date": "the nineteenth of November",
+            "status": "five days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "notes": "Borrower asked to end the call and refused to discuss the payment.",
+            "outcome": "asked_to_stop"
+          },
+          "success": true,
+          "data": {
+            "outcome": "asked_to_stop",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Priya Sharma?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Priya Sharma."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Priya. For your security, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Twenty fifth July 1992."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I'm calling regarding your personal loan EMI of eighteen thousand seven hundred fifty rupees, which was due on the nineteenth of November and is now five days overdue. How would you like to clear this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I don't want to talk about this. Please end the call."
+        },
+        {
+          "role": "bot",
+          "text": "I understand. I'll note your request and end the call now. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_answer_first",
+      "run": 1,
+      "call_id": "c_20261124_122011_398d",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending five five six seven"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, hi! Yes, this is Neha."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Neha, to keep your account secure, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Sure, my birth date is February 2nd, 1990. Wait, no, that's wrong. It's January 30th, 1990."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Neha. Your EMI for your consumer durable loan is four thousand nine hundred ninety nine rupees, and it's due on the twenty sixth of November. How would you like to handle this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Okay, thanks for letting me know. I'll make sure to pay it on time."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you so much, Neha. I've sent a payment link to your mobile number ending five five six seven to make it easy for you. Have a great day!"
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_answer_first",
+      "run": 2,
+      "call_id": "c_20261124_122013_7e73",
+      "ended_by": "end_call",
+      "caller_turns": 5,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122013_7e73",
+        "borrower_id": "b_04",
+        "at": "2026-11-24T17:50:23",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Borrower confirmed she will pay the EMI on time."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-02-02"
+          },
+          "success": false,
+          "data": {},
+          "injected_failure": false,
+          "ms": 1
+        },
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "will_pay_on_time",
+            "notes": "Borrower confirmed she will pay the EMI on time.",
+            "escalate_to_human": false
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Neha. How can I help you?"
+        },
+        {
+          "role": "bot",
+          "text": "Hello Neha. For security purposes, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, of course. My birthday is February 2nd, 1990."
+        },
+        {
+          "role": "bot",
+          "text": "I'm sorry, that doesn't quite match our records. Could you please share the last four digits of your registered mobile number instead?"
+        },
+        {
+          "role": "caller",
+          "text": "Wait, I'm so sorry! I always mix that up. It's January 30th, 1990. My mind is a bit all over the place today."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Neha. I'm calling about your consumer durable loan EMI of four thousand nine hundred ninety nine rupees, which is due on the twenty sixth of November. How would you like to handle this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I'll pay it on time, as usual. You don't have to worry about that."
+        },
+        {
+          "role": "bot",
+          "text": "That's wonderful, thank you so much for confirming, Neha. Shall I send a payment link to your registered mobile number for your convenience?"
+        },
+        {
+          "role": "caller",
+          "text": "No, that's okay. I'll take care of it myself. Thanks, though!"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Neha. Have a great day ahead. Goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "wrong_answer_first",
+      "run": 3,
+      "call_id": "c_20261124_122014_e08a",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122014_e08a",
+        "borrower_id": "b_04",
+        "at": "2026-11-24T17:50:22",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": "Neha confirmed she will pay on time through the app."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1990-01-30"
+          },
+          "success": true,
+          "data": {
+            "name": "Neha Iyer",
+            "loan_type": "consumer durable loan",
+            "amount_due": "four thousand nine hundred ninety nine rupees",
+            "due_date": "the twenty sixth of November",
+            "status": "due in two days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "escalate_to_human": false,
+            "outcome": "will_pay_on_time",
+            "notes": "Neha confirmed she will pay on time through the app."
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 4
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Neha Iyer?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, yes, this is Neha. Hi there!"
+        },
+        {
+          "role": "bot",
+          "text": "Hi Neha. Could you please confirm your date of birth or the last four digits of your registered mobile number for security?"
+        },
+        {
+          "role": "caller",
+          "text": "Hmm, sure. My birthday is February 2nd, 1990. Wait, no, that's not right. It's January 30th, 1990."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks, Neha. I'm calling about your consumer durable loan EMI of four thousand nine hundred ninety nine rupees, which is due on the twenty sixth of November. How would you like to handle this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Oh, right, the EMI. Don't worry, I always pay on time."
+        },
+        {
+          "role": "bot",
+          "text": "That's wonderful, thank you so much for confirming, Neha. Would you like me to send a quick payment link to your phone so you can clear it easily?"
+        },
+        {
+          "role": "caller",
+          "text": "No, that's okay. I'll take care of it myself through the app. Thanks, though!"
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Neha. Have a great day, goodbye!"
+        }
+      ]
+    },
+    {
+      "scenario": "date_said_differently",
+      "run": 1,
+      "call_id": "c_20261124_122017_1124",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122017_1124",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:50:23",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": false,
+        "notes": null
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "will_pay_on_time",
+            "escalate_to_human": false
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yeah, this is Ravi."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Ravi. To keep your account secure, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "Uh, sure. It's 12/03/88."
+        },
+        {
+          "role": "bot",
+          "text": "Thanks, Ravi. I'm calling about your two-wheeler loan EMI of twelve thousand five hundred rupees, which is due on the twenty seventh of November. How would you like to handle this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "Yeah, I'm aware of it. I'll make sure it's paid on time."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Ravi. We appreciate your promptness. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "date_said_differently",
+      "run": 2,
+      "call_id": "c_20261124_122019_0116",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": {
+        "call_id": "c_20261124_122019_0116",
+        "borrower_id": "b_01",
+        "at": "2026-11-24T17:50:27",
+        "verified": true,
+        "outcome": "will_pay_on_time",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": true,
+        "escalate_to_human": false,
+        "notes": "Ravi Kumar confirmed he will pay the EMI of Rs 12,500 on time by November 27. Payment link sent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 2
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending four eight two one"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Ravi Kumar confirmed he will pay the EMI of Rs 12,500 on time by November 27. Payment link sent.",
+            "escalate_to_human": false,
+            "outcome": "will_pay_on_time"
+          },
+          "success": true,
+          "data": {
+            "outcome": "will_pay_on_time",
+            "escalated": false
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Ravi."
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Mr. Kumar. Before we discuss your account, could you please confirm your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "Sure, it's 12/03/88."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Mr. Kumar. Your two-wheeler loan EMI of twelve thousand five hundred rupees is due on the twenty seventh of November. Will you be able to make this payment on time?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, I'll pay on time, no problem."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Mr. Kumar. I've sent a payment link to your mobile number ending in four eight two one. Have a good day!"
+        }
+      ]
+    },
+    {
+      "scenario": "date_said_differently",
+      "run": 3,
+      "call_id": "c_20261124_122022_1c47",
+      "ended_by": "caller_hung_up",
+      "caller_turns": 3,
+      "expected": {
+        "outcome": [
+          "will_pay_on_time"
+        ],
+        "verified": true,
+        "escalate_to_human": false
+      },
+      "outcome": null,
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1988-03-12"
+          },
+          "success": true,
+          "data": {
+            "name": "Ravi Kumar",
+            "loan_type": "two-wheeler loan",
+            "amount_due": "twelve thousand five hundred rupees",
+            "due_date": "the twenty seventh of November",
+            "status": "due in three days"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "send_payment_link",
+          "args": {},
+          "success": true,
+          "data": {
+            "to": "the mobile number ending four eight two one"
+          },
+          "injected_failure": false,
+          "ms": 0
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Ravi Kumar?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, that's me."
+        },
+        {
+          "role": "bot",
+          "text": "Hello, Mr. Kumar. Could you please share your date of birth or the last four digits of your registered mobile number for verification?"
+        },
+        {
+          "role": "caller",
+          "text": "My birth date is 12/03/88."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you, Mr. Kumar. I'm calling about your two-wheeler loan EMI of twelve thousand five hundred rupees, which is due on the twenty seventh of November. How would you like to clear this?"
+        },
+        {
+          "role": "caller",
+          "text": "I'll make sure it's paid on time."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you so much, Mr. Kumar. I've just sent a payment link to your mobile number ending in four eight two one for your convenience. Have a great day."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_for_human",
+      "run": 1,
+      "call_id": "c_20261124_122023_aeb2",
+      "ended_by": "end_call",
+      "caller_turns": 4,
+      "expected": {
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_122023_aeb2",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:50:31",
+        "verified": true,
+        "outcome": "dispute",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower wants to close the loan early and asked to speak to a human agent."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1979-09-14"
+          },
+          "success": true,
+          "data": {
+            "name": "Vikram Singh",
+            "loan_type": "car loan",
+            "amount_due": "twenty one thousand three hundred rupees",
+            "due_date": "the sixteenth of November",
+            "status": "eight days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "notes": "Borrower wants to close the loan early and asked to speak to a human agent.",
+            "outcome": "dispute",
+            "escalate_to_human": true
+          },
+          "success": true,
+          "data": {
+            "outcome": "dispute",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 1
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram. I'm calling about my loan."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Mr. Singh, thank you for speaking with me. Could you please share your date of birth or the last four digits of your registered mobile number so I can access your loan details?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is September 14th, 1979."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming, Mr. Singh. I'm calling about your car loan EMI of twenty one thousand three hundred rupees, which was due on the sixteenth of November and is now eight days overdue. When would you be able to make this payment?"
+        },
+        {
+          "role": "caller",
+          "text": "I'm actually calling about closing the loan early. I want to speak to a human about this, not a bot."
+        },
+        {
+          "role": "bot",
+          "text": "I understand, Mr. Singh. Let me connect you with a human agent who can help you with closing your loan early. Please hold on for a moment while I transfer your call."
+        },
+        {
+          "role": "caller",
+          "text": "Thank you."
+        },
+        {
+          "role": "bot",
+          "text": "I'm transferring you now. Have a good day."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_for_human",
+      "run": 2,
+      "call_id": "c_20261124_122024_0e17",
+      "ended_by": "end_call",
+      "caller_turns": 2,
+      "expected": {
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_122024_0e17",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:50:28",
+        "verified": false,
+        "outcome": "hardship",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower asked to speak to a human representative during identity verification."
+      },
+      "checks": {
+        "outcome_accuracy": false,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "hardship",
+            "escalate_to_human": true,
+            "notes": "Borrower asked to speak to a human representative during identity verification."
+          },
+          "success": true,
+          "data": {
+            "outcome": "hardship",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 10
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram. I'm calling about my loan."
+        },
+        {
+          "role": "bot",
+          "text": "Hello Vikram. To ensure your account's security, could you please share your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "I'd prefer to speak to a person about this. Could I be connected to a human representative, please?"
+        },
+        {
+          "role": "bot",
+          "text": "I understand. I'll connect you to a human representative right away. Please hold the line."
+        }
+      ]
+    },
+    {
+      "scenario": "asks_for_human",
+      "run": 3,
+      "call_id": "c_20261124_122028_560f",
+      "ended_by": "end_call",
+      "caller_turns": 3,
+      "expected": {
+        "verified": true,
+        "escalate_to_human": true
+      },
+      "outcome": {
+        "call_id": "c_20261124_122028_560f",
+        "borrower_id": "b_05",
+        "at": "2026-11-24T17:50:33",
+        "verified": true,
+        "outcome": "hardship",
+        "promise_to_pay_date": null,
+        "callback_at": null,
+        "payment_link_sent": false,
+        "escalate_to_human": true,
+        "notes": "Borrower wants to speak with a human agent regarding early loan closure."
+      },
+      "checks": {
+        "outcome_accuracy": true,
+        "verification_before_disclosure": true,
+        "promise_to_pay_capture": null
+      },
+      "leaks": [],
+      "tool_calls": [
+        {
+          "name": "verify_identity",
+          "args": {
+            "birth_date": "1979-09-14"
+          },
+          "success": true,
+          "data": {
+            "name": "Vikram Singh",
+            "loan_type": "car loan",
+            "amount_due": "twenty one thousand three hundred rupees",
+            "due_date": "the sixteenth of November",
+            "status": "eight days overdue"
+          },
+          "injected_failure": false,
+          "ms": 0
+        },
+        {
+          "name": "end_call",
+          "args": {
+            "outcome": "hardship",
+            "escalate_to_human": true,
+            "notes": "Borrower wants to speak with a human agent regarding early loan closure."
+          },
+          "success": true,
+          "data": {
+            "outcome": "hardship",
+            "escalated": true
+          },
+          "injected_failure": false,
+          "ms": 2
+        }
+      ],
+      "transcript": [
+        {
+          "role": "bot",
+          "text": "Hi, this is Lumen Finance. Am I speaking with Vikram Singh?"
+        },
+        {
+          "role": "caller",
+          "text": "Yes, this is Vikram Singh. I'd like to ask some questions about closing my loan early."
+        },
+        {
+          "role": "bot",
+          "text": "I can certainly help you with your loan. For security purposes, could you please confirm your date of birth or the last four digits of your registered mobile number?"
+        },
+        {
+          "role": "caller",
+          "text": "My date of birth is September fourteenth, nineteen seventy-nine."
+        },
+        {
+          "role": "bot",
+          "text": "Thank you for confirming. I see your car loan EMI of twenty one thousand three hundred rupees was due on the sixteenth of November, and it is currently eight days overdue. \n\nRegarding your question about closing your loan early, I can note that down for our team, but would you be able to clear this overdue EMI today?"
+        },
+        {
+          "role": "caller",
+          "text": "I'd like to speak to a human about closing my loan early, not a bot. Can you connect me with someone?"
+        },
+        {
+          "role": "bot",
+          "text": "I understand. I'll connect you to a human agent right away. Goodbye."
+        }
+      ]
+    }
+  ]
+}
